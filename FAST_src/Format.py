@@ -31,6 +31,7 @@ def isinpath(file):  # 判断相关文件是否存在
     """
     orifile = str(file).split(".")[0]
     if len(orifile) > 9:
+        ionfile = file.lower()[0:4] + 'g' + file.lower()[16:20] + "." + file.lower()[14:16] + "i"
         if '.SP3' not in file and '.CLK' not in file:
             filelowo = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "o"
             filelowd = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "d"

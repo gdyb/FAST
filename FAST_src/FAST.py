@@ -140,6 +140,13 @@ def FAST():
                     >               GPS_IGR_clk / GPS_IGS_clk_30s / GRE_COD_R_clk /
                     + 支持直接输入站点名
                     by Chang Chuntao  # 2023-01-14
+
+    Version 2.07    > GPS_EU_CORS -> MGEX_EU_cors
+                    > MGEX_EU_cors / CODG_ion  add source
+                    > IGS rename -> IGS_day_snx / IGS_week_snx
+                    + COD_F_erp
+                    + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
+                    by Chang Chuntao  # 2023-02-10
     """
     import sys
     from ARG_Mode import ARG_Mode
