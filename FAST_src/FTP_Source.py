@@ -108,6 +108,7 @@ for p in plate:
                     > IGS rename -> IGS_day_snx / IGS_week_snx
                     + COD_F_erp
                     + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
+                    > MGEX_GFZ_F_obx -> MGEX_GFZ_R_obx
                     by Chang Chuntao  -> Version : 2.07
 '''
 
@@ -728,17 +729,18 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
                          "ftps://gdc.cddis.eosdis.nasa.gov/gps/products/<GPSW>/cod<GPSWD>.obx.Z"],
 
          "GPS_GRG_obx": ["--ftp-user anonymous --ftp-password cctcasm@163.com "
-                         "ftps://gdc.cddis.eosdis.nasa.gov/gps/products/mgex/<GPSW>/GRG0MGXFIN_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz"],
+                         "ftps://gdc.cddis.eosdis.nasa.gov/gps/products/mgex/<GPSW>/GRG0MGXFIN_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz",
+                         'ftp://igs.ign.fr/pub/igs/products/mgex/<GPSW>/GRG0MGXFIN_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz'],
 
          "MGEX_COD_F_obx": ["ftp://igs.gnsswhu.cn/pub/gnss/products/mgex/<GPSW>/"
-                            "WUM0MGXFIN_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz"],
+                            "WUM0MGXFIN_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz",
+                            'ftp://igs.ign.fr/pub/igs/products/mgex/<GPSW>/COD0MGXFIN_<YYYY><DOY>0000_01D_15M_ATT.OBX.gz'],
 
          'MGEX_WHU_F_obx': ['ftp://igs.gnsswhu.cn/pub/gnss/products/mgex/<GPSW>/WUM0MGXFIN_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz'],
 
-         "MGEX_COD_obx": ["--ftp-user anonymous --ftp-password cctcasm@163.com "
-                          "ftps://gdc.cddis.eosdis.nasa.gov/gps/products/mgex/<GPSW>/COD0MGXFIN_<YYYY><DOY>0000_01D_15M_ATT.OBX.gz"],
 
-         "MGEX_GFZ_F_obx": ["--ftp-user anonymous --ftp-password cctcasm@163.com "
+         "MGEX_GFZ_R_obx": ['ftp://igs.ign.fr/pub/igs/products/mgex/<GPSW>/GFZ0MGXRAP_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz',
+                            "--ftp-user anonymous --ftp-password cctcasm@163.com "
                             "ftps://gdc.cddis.eosdis.nasa.gov/gps/products/mgex/<GPSW>/GFZ0MGXRAP_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz"],
 
          "MGEX_WHU_U_obx": [

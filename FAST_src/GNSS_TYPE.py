@@ -95,6 +95,7 @@
     2023-02-02 :    > P1C1 重复
                     + COD_F_erp
                     + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
+                    > MGEX_GFZ_F_obx -> MGEX_GFZ_R_obx
                     by Chang Chuntao  -> Version : 2.07
 """
 
@@ -128,7 +129,7 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
                               "P1C1", "P1P2", "P2C2",
 
                               "GPS_COD_obx", "GPS_GRG_obx",
-                              "MGEX_WHU_F_obx", "MGEX_COD_F_obx", "MGEX_GFZ_F_obx",
+                              "MGEX_WHU_F_obx", "MGEX_COD_F_obx", "MGEX_GFZ_R_obx",
                               'MGEX_WHU_U_obx']],
 
              ["ION_TRO", ["IGSG_ion", "IGRG_ion", "WHUG_ion", "WURG_ion", "CODG_ion", "CORG_ion", "UQRG_ion",            # 7 ION_TRO
