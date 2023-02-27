@@ -97,6 +97,8 @@
                     + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
                     > MGEX_GFZ_F_obx -> MGEX_GFZ_R_obx
                     by Chang Chuntao  -> Version : 2.07
+    2023-02-27 :    + COD_F_ion
+                    by Chang Chuntao  -> Version : 2.08
 """
 
 gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd4"]],                                   # 1 BRDC
@@ -132,10 +134,15 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
                               "MGEX_WHU_F_obx", "MGEX_COD_F_obx", "MGEX_GFZ_R_obx",
                               'MGEX_WHU_U_obx']],
 
-             ["ION_TRO", ["IGSG_ion", "IGRG_ion", "WHUG_ion", "WURG_ion", "CODG_ion", "CORG_ion", "UQRG_ion",            # 7 ION_TRO
-                          "UPRG_ion", "JPLG_ion", "JPRG_ion", "CASG_ion", "CARG_ion", "ESAG_ion", "ESRG_ion",
+             ["ION_TRO", ["IGSG_ion", "IGRG_ion", "WHUG_ion",
+                          "WURG_ion", "CODG_ion", "CORG_ion",
+                          "UQRG_ion", "UPRG_ion", "JPLG_ion",
+                          "JPRG_ion", "CASG_ion", "CARG_ion",
+                          "ESAG_ion", "ESRG_ion",
+                          "COD_F_ion",
 
-                          "IGS_zpd", "COD_tro", "JPL_tro", "GRID_1x1_VMF3", "GRID_2.5x2_VMF1", "GRID_5x5_VMF3",
+                          "IGS_zpd", "COD_tro", "JPL_tro",
+                          "GRID_1x1_VMF3", "GRID_2.5x2_VMF1", "GRID_5x5_VMF3",
                           "Meteorological"]],
 
              ["SINEX", ["IGS_day_snx", "IGS_week_snx",

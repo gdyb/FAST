@@ -156,6 +156,8 @@ def sub_cdd(obj):
                     + COD_F_erp
                     + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
                     by Chang Chuntao  -> Version : 2.07
+    2023-02-27 :    + COD_F_ion
+                    by Chang Chuntao  -> Version : 2.08
     """
     print("")
     if obj == 1:
@@ -254,12 +256,13 @@ def sub_cdd(obj):
         print("    |    7 : UQRG_ion               8 : UPRG_ion               9 : JPLG_ion      |")
         print("    |   10 : JPRG_ion              11 : CASG_ion              12 : CARG_ion      |")
         print("    |   13 : ESAG_ion              14 : ESRG_ion                                 |")
+        print("    |   15 : COD_F_ion                                                           |")
         print("    |                                                                            |")
         print("    +------------------------------------TRO-------------------------------------+")
         print("    |                                                                            |")
-        print("    |   15 : IGS_zpd               16 : COD_tro               17 : JPL_tro       |")
-        print("    |   18 : GRID_1x1_VMF3         19 : GRID_2.5x2_VMF1       20 : GRID_5x5_VMF3 |")
-        print("    |   21 : Meteorological                                                      |")
+        print("    |   16 : IGS_zpd               17 : COD_tro               18 : JPL_tro       |")
+        print("    |   19 : GRID_1x1_VMF3         20 : GRID_2.5x2_VMF1       21 : GRID_5x5_VMF3 |")
+        print("    |   22 : Meteorological                                                      |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 8:
