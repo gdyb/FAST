@@ -3,9 +3,9 @@
 # FAST_Main      : MAIN of Fusion Abundant multi-Source data download Terminal
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.05
+# Latest Version : 2.08
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2022-12-04 - Version 2.05
+# Date           : 2023-03-12 - Version 2.08
 
 def FAST():
     """
@@ -147,6 +147,10 @@ def FAST():
                     + COD_F_erp
                     + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
                     by Chang Chuntao  # 2023-02-10
+
+    Version 2.08    > 修复仅需站点模式,增加<SITE_SHORT>标识
+                    + COD_F_ion
+                    by Chang Chuntao  # 2023-03-12
     """
     import sys
     from ARG_Mode import ARG_Mode

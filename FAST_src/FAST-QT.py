@@ -16,7 +16,7 @@ from QT_Frame import FramelessWindow
 from GNSS_TYPE import gnss_type, yd_type, ym_type, no_type, yds_type, s_type
 import qdarkstyle
 
-version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07]
+version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08]
 version_time = ['2022-11-08',
                 '2022-11-09',
                 '2022-11-10',
@@ -24,7 +24,8 @@ version_time = ['2022-11-08',
                 '2022-12-02',
                 '2022-12-04',
                 '2023-01-14',
-                '2023-02-10']
+                '2023-02-10',
+                '2023-03-12']
 
 if getattr(sys, 'frozen', False):
     dirname = os.path.dirname(sys.executable)

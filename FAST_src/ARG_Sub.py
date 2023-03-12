@@ -3,9 +3,9 @@
 # ARG_Sub        : Identify program arguments
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 1.24
+# Latest Version : 2.08
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2022.10.10 - Version 1.24
+# Date           : 2023-03-12 - Version 2.08
 import datetime
 import sys
 from FAST_Print import PrintGDD
@@ -118,6 +118,8 @@ def geturl(cddarg):
                     >         s_type -> site
                     > 删除旧索引: objneedydqd2 / objneedyd1d2loc / objneedloc / objneedn
                     by Chang Chuntao  -> Version : 2.01
+    2023-03-12 :    > 修复仅需站点模式
+                    by Chang Chuntao  -> Version : 2.08
     """
     urllist = []
     for dt in str(cddarg['datatype']).split(","):
@@ -155,9 +157,9 @@ def geturl(cddarg):
                     siteftp = []
                     for ftpInList in ftpsitelist:
                         ftpInList = replaceSiteStr(ftpInList, siteInList)
-                        # f = f.replace('<SITE>', siteInList)
                         siteftp.append(ftpInList)
                     typeurl.append(siteftp)  # 按天下载
+
         # 数据类型为输入年月文件
         elif dt in ym_type:
             PrintGDD("下载时间为" + str(cddarg['year']) + "年,月" + str(cddarg['month']) + "\n",
@@ -171,6 +173,18 @@ def geturl(cddarg):
                     ftp = ReplaceTimeWildcard(ftp, ym_datetime)
 
                     typeurl.append([ftp])
+
+        # 数据类型为输入站点文件
+        elif dt in s_type:
+            cddarg['site'] = getSite(cddarg['file'], dt)
+            for day in range(cddarg['day1'], cddarg['day2'] + 1):
+                ftpsitelist = getftp(dt, cddarg['year'], day)
+                for siteInList in cddarg['site']:
+                    siteftp = []
+                    for ftpInList in ftpsitelist:
+                        ftpInList = replaceSiteStr(ftpInList, siteInList)
+                        siteftp.append(ftpInList)
+                    typeurl.append(siteftp)  # 按天下载
 
         urllist.append(typeurl)
     return urllist

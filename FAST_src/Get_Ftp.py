@@ -3,9 +3,9 @@
 # GET_Ftp        : Reconstruct FTP address
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.06
+# Latest Version : 2.08
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-01-14 - Version 2.06
+# Date           : 2023-03-12 - Version 2.08
 
 
 from datetime import datetime, timedelta
@@ -217,21 +217,28 @@ def replaceSiteStr(ftpInList, siteInList):
                     by Chang Chuntao  -> Version : 1.21
     2023-01-14 :    支持大小长短自由
                     by Chang Chuntao  -> Version : 2.06
+    2023-03-12 :    新增SITE_SHORT,支持时间序列产品下载
+                    by Chang Chuntao  -> Version : 2.18
     """
     upperSite = ''
     if len(siteInList) == 4:
         lowSite = str(siteInList).lower()
+        upperShortSite = lowSite.upper()
         for mgexSite in mgex:
             if mgexSite[0] == lowSite:
                 upperSite = mgexSite[1]
     elif len(siteInList) == 9:
         lowSite = str(siteInList[0:4]).lower()
         upperSite = str(siteInList).upper()
+        upperShortSite = lowSite.upper()
     else:
         lowSite = ''
         upperSite = ''
+        upperShortSite = ''
     if '<SITE>' in ftpInList:
         ftpInList = str(ftpInList).replace('<SITE>', lowSite)
     if '<SITE_LONG>' in ftpInList:
         ftpInList = str(ftpInList).replace('<SITE_LONG>', upperSite)
+    if '<SITE_SHORT>' in ftpInList:
+        ftpInList = str(ftpInList).replace('<SITE_SHORT>', upperShortSite)
     return ftpInList
