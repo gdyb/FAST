@@ -14,8 +14,9 @@ import subprocess
 import sys
 import time
 from FAST_Print import PrintGDD
+from Get_Ftp import ReplaceTimeWildcard
 from GNSS_Timestran import gnssTime2datetime, datetime2GnssTime
-from pubFuncs import mkdir, copyFile, moveFile, EmptyFolder
+from pubFuncs import mkdir, EmptyFolder
 
 
 def isinpath(file):  # 判断相关文件是否存在
@@ -27,77 +28,145 @@ def isinpath(file):  # 判断相关文件是否存在
     2022-11-15 :    > 增加高采样率判定
                     by Chang Chuntao    -> Version : 2.03
     2023-01-14 :    > 修正SP3 CLK判定
-                    by Chang Chuntao    -> Version : 2.03
+                    by Chang Chuntao    -> Version : 2.06
+    2023-03-17 :    > 重写文件判定
+                    by Chang Chuntao    -> Version : 2.08
     """
     orifile = str(file).split(".")[0]
+    ionfile = file
+    projectFileLow = file
+    filelowo = file
+    filelowd = file
+    filelowp = file
+    filelown = file
+    fileprolow = file
+    projectFileUpper = file
     if len(orifile) > 9:
         ionfile = file.lower()[0:4] + 'g' + file.lower()[16:20] + "." + file.lower()[14:16] + "i"
-        if '.SP3' not in file and '.CLK' not in file:
+        if '.SP3' in file or '.CLK' in file or '.OBX' in file or '.ERP' in file or '.ION' in file \
+                or '.BIA' in file or '.TRO' in file:
+            year = file.lower()[11:15]
+            doy = file.lower()[15:18]
+            specTime = gnssTime2datetime(year + " " + doy, "YearDoy")
+            [YearMonthDay, GPSWeekDay, YearDoy, MjdSod] = datetime2GnssTime(specTime)
+            proType = str(file).split(".")[-2].lower()
+            if 'IGS0OPS' in file:
+                if 'FIN' in file:
+                    sp3_flag = 's'
+                    projectFileLow = file.lower()[0:2] + sp3_flag + str(GPSWeekDay[0]) + str(
+                        GPSWeekDay[1]) + "." + proType
+                elif 'RAP' in file:
+                    sp3_flag = 'r'
+                    projectFileLow = file.lower()[0:2] + sp3_flag + str(GPSWeekDay[0]) + str(
+                        GPSWeekDay[1]) + "." + proType
+                elif 'ULT' in file:
+                    sp3_flag = 'u'
+                    hh = file[18:20]
+                    projectFileLow = file.lower()[0:2] + sp3_flag + str(GPSWeekDay[0]) + str(
+                        GPSWeekDay[1]) + '_' + hh + "." + proType
+                else:
+                    sp3_flag = 's'
+                    projectFileLow = file.lower()[0:2] + sp3_flag + str(GPSWeekDay[0]) + str(
+                        GPSWeekDay[1]) + "." + proType
+
+            elif 'COD0OPSRAP_' in file:
+                projectFileLow = 'COD<GPSWD>.EPH_M'
+                projectFileLow = ReplaceTimeWildcard(projectFileLow, specTime)
+            else:
+                projectFileLow = file.lower()[0:3] + str(GPSWeekDay[0]) + str(GPSWeekDay[1]) + "." + proType
+        elif '.SNX' in file:
+            year = file.lower()[11:15]
+            doy = file.lower()[15:18]
+            specTime = gnssTime2datetime(year + " " + doy, "YearDoy")
+            [YearMonthDay, GPSWeekDay, YearDoy, MjdSod] = datetime2GnssTime(specTime)
+            if '_SOL' in file:
+                if 'IGS0OPSSNX' in file and '01D_01D_SOL' in file:
+                    projectFileLow = file.lower()[0:3] + str(YearMonthDay[0])[:2] + 'P' + str(GPSWeekDay[0]) + str(
+                        GPSWeekDay[1]) + ".snx"
+                elif 'IGS0OPSSNX' in file and '07D_07D_SOL' in file:
+                    projectFileLow = file.lower()[0:3] + str(YearMonthDay[0])[:2] + 'P' + str(GPSWeekDay[0]) + ".snx"
+                else:
+                    projectFileLow = file.lower()[0:3] + str(GPSWeekDay[0]) + str(GPSWeekDay[1]) + ".snx"
+            else:
+                projectFileLow = file.lower()[0:3] + str(GPSWeekDay[0]) + str(GPSWeekDay[1]) + ".ssc"
+        elif 'CH-OG-1-SST' in file:
+            projectFileLow = str(file).replace('.zip', '') + '.rnx'
+            filelowo = orifile[:27] + '.rnx'
+        else:
             filelowo = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "o"
             filelowd = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "d"
             filelowp = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "p"
             fileprolow = file.lower()[0:4] + file.lower()[16:20] + ".bia"
-            sp3filelow = filelowo
-            filelown = filelowo
-        elif '.SP3' in file or '.sp3' in file:
-            year = file.lower()[11:15]
-            doy = file.lower()[15:18]
-            specTime = gnssTime2datetime(year + " " + doy, "YearDoy")
-            [YearMonthDay, GPSWeekDay, YearDoy, MjdSod] = datetime2GnssTime(specTime)
-            sp3filelow = file.lower()[0:3] + str(GPSWeekDay[0]) + str(GPSWeekDay[1]) + ".sp3"
-            filelowo = sp3filelow
-            filelowd = sp3filelow
-            filelowp = sp3filelow
-            filelown = sp3filelow
-            fileprolow = filelown
-        elif '.CLK' in file or '.clk' in file:
-            year = file.lower()[11:15]
-            doy = file.lower()[15:18]
-            specTime = gnssTime2datetime(year + " " + doy, "YearDoy")
-            [YearMonthDay, GPSWeekDay, YearDoy, MjdSod] = datetime2GnssTime(specTime)
-            sp3filelow = file.lower()[0:3] + str(GPSWeekDay[0]) + str(GPSWeekDay[1]) + ".clk"
-            filelowo = sp3filelow
-            filelowd = sp3filelow
-            filelowp = sp3filelow
-            filelown = sp3filelow
-            fileprolow = filelown
     else:
+        if 'igs' in file and '.sp3' in file:
+            gpsw = file[3:7]
+            gpsd = file[7]
+            specTime = gnssTime2datetime(gpsw + " " + gpsd, "GPSWeekDay")
+            projectFileUpper = 'IGS0OPSFIN_<YYYY><DOY>0000_01D_15M_ORB.SP3'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
+        elif 'igr' in file and '.sp3' in file:
+            gpsw = file[3:7]
+            gpsd = file[7]
+            specTime = gnssTime2datetime(gpsw + " " + gpsd, "GPSWeekDay")
+            projectFileUpper = 'IGS0OPSRAP_<YYYY><DOY>0000_01D_15M_ORB.SP3'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
+        elif 'igs' in file and '.clk' in file:
+            gpsw = file[3:7]
+            gpsd = file[7]
+            specTime = gnssTime2datetime(gpsw + " " + gpsd, "GPSWeekDay")
+            projectFileUpper = 'IGS0OPSFIN_<YYYY><DOY>0000_01D_05M_CLK.CLK.gz'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
+        elif 'igr' in file and '.clk' in file and '30s' not in file:
+            gpsw = file[3:7]
+            gpsd = file[7]
+            specTime = gnssTime2datetime(gpsw + " " + gpsd, "GPSWeekDay")
+            projectFileUpper = 'IGS0OPSRAP_<YYYY><DOY>0000_01D_05M_CLK.CLK.gz'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
+        elif 'igr' in file and '.clk' in file and '30s' in file:
+            gpsw = file[3:7]
+            gpsd = file[7]
+            specTime = gnssTime2datetime(gpsw + " " + gpsd, "GPSWeekDay")
+            projectFileUpper = 'IGS0OPSFIN_<YYYY><DOY>0000_01D_30S_CLK.CLK.gz'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
+        elif 'COD' in file and '.EPH_M.Z' in file:
+            gpsw = file[3:7]
+            gpsd = file[7]
+            specTime = gnssTime2datetime(gpsw + " " + gpsd, "GPSWeekDay")
+            projectFileUpper = 'COD0OPSRAP_<YYYY><DOY>0000_01D_05M_ORB.SP3'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
+        elif 'codg' in file and 'i.Z' in file:
+            doy = file[4:7]
+            yyyy = str(2000 + int(file[9:11]))
+            specTime = gnssTime2datetime(yyyy + " " + doy, "YearDoy")
+            projectFileUpper = 'COD0OPSFIN_<YYYY><DOY>0000_01D_01H_GIM.INX'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
         filelowo = file.lower()[0:11] + "o"
         filelowd = file.lower()[0:11] + "d"
         filelowp = file.lower()[0:11] + "p"
         filelown = file.lower()[0:11] + "n"
         fileprolow = file.lower()[0:12]
-        sp3filelow = filelown
-    gzdfile = filelowd + ".gz"
-    zdfile = filelowd + ".Z"
-    gzofile = filelowo + ".gz"
-    zofile = filelowo + ".Z"
-    filebialowZ = fileprolow + ".Z"
-    filebialowgz = fileprolow + ".gz"
+    projectFileLowGz = projectFileLow + '.gz'
+    projectFileLowZ = projectFileLow + '.Z'
+    projectFileUpperGz = projectFileUpper + '.gz'
+    projectFileUpperZ = projectFileUpper + '.Z'
     highrate_file = file.split('.tar')[0][:-1] + 'o'
+    fileUnzip = str(file).replace('.' + file.split('.')[-1], '')
     highrate_file_mgex = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "o"
-
+    filelowoZ = filelowo + '.Z'
+    filelowogz = filelowo + '.gz'
+    filelowdZ = filelowd + '.Z'
+    filelowdgz = filelowd + '.gz'
     if os.path.exists(file[0:-2]) or os.path.exists(file[0:-3]) \
-            or os.path.exists(filelowo) or os.path.exists(filelowd) \
-            or os.path.exists(gzdfile) or os.path.exists(zdfile) \
-            or os.path.exists(gzofile) or os.path.exists(zofile) \
-            or os.path.exists(filelowp) or os.path.exists(filelown) \
-            or os.path.exists(filebialowgz) or os.path.exists(filebialowZ) \
-            or os.path.exists(sp3filelow) or os.path.exists(highrate_file) or os.path.exists(highrate_file_mgex) \
-            or os.path.exists(file):
+            or os.path.exists(file) or os.path.exists(projectFileLowZ) or os.path.exists(projectFileLowGz) \
+            or os.path.exists(highrate_file) or os.path.exists(highrate_file_mgex) or os.path.exists(filelowo) \
+            or os.path.exists(filelowd) or os.path.exists(filelowp) or os.path.exists(filelown) \
+            or os.path.exists(fileprolow) or os.path.exists(ionfile) or os.path.exists(projectFileLow) \
+            or os.path.exists(fileUnzip) or os.path.exists(projectFileUpperGz) or os.path.exists(projectFileUpperZ) \
+            or os.path.exists(projectFileUpper) or os.path.exists(filelowoZ) or os.path.exists(filelowogz)\
+            or os.path.exists(filelowdZ) or os.path.exists(filelowdgz):
         return True
-    # if 'EPH_M' in file:
-    #     if os.path.exists(file.split('.')[0] + '.sp3'):
-    #         return True
-    # if 'CLK_M' in file:
-    #     if os.path.exists(file.split('.')[0] + '.clk'):
-    #         return True
-    # if 'BIA_M' in file:
-    #     if os.path.exists(file.split('.')[0] + '.bia'):
-    #         return True
     else:
         return False
-
 
 
 """
@@ -109,6 +178,8 @@ def isinpath(file):  # 判断相关文件是否存在
                     by Chang Chuntao    -> Version : 2.03
     2022-12-04 :    增加tgz解压
                     by Chang Chuntao    -> Version : 2.05
+    2023-03-18 :    增加zip解压
+                    by Chang Chuntao    -> Version : 2.08
 """
 tar = 'tar -xf '
 if platform.system() == 'Windows':
@@ -119,6 +190,7 @@ if platform.system() == 'Windows':
     unzip = os.path.join(dirname, 'bin', 'gzip.exe')
     unzip += " -d "
     unzip_tgz = 'tar -xvzf'
+    unzip_zip = os.path.join(dirname, 'bin', 'unzip.exe') + ' '
     crx2rnx = os.path.join(dirname, 'bin', 'crx2rnx.exe')
     crx2rnx += " "
     teqc = os.path.join(dirname, 'bin', 'teqc.exe')
@@ -134,6 +206,7 @@ else:
     crx2rnx += ' '
     unzip_tgz = 'tar -xvzf'
     uncompress = os.path.join(dirname, 'bin', 'uncompress')
+    unzip_zip = os.path.join(dirname, 'bin', 'unzip') + ' '
     unzip = uncompress + ' '
     teqc = os.path.join(dirname, 'bin', 'teqc')
     teqc += ' '
@@ -152,7 +225,8 @@ def uncompresss(file):
     """
     if not os.path.isfile(file):
         return
-    if file.split(".")[-1] == "Z" or file.split(".")[-1] == "gz" or file.split(".")[-1] == "tgz":
+    if file.split(".")[-1] == "Z" or file.split(".")[-1] == "gz" or file.split(".")[-1] == "tgz" or\
+            file.split(".")[-1] == "ZIP" or file.split(".")[-1] == "zip":
         if file.split(".")[-1] == "Z" or file.split(".")[-1] == "gz":
             try:
                 cmd_list = [unzip[:-1], file]
@@ -160,6 +234,17 @@ def uncompresss(file):
             except:
                 cmd = unzip + file
                 p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        elif file.split(".")[-1] == "ZIP" or file.split(".")[-1] == "zip":
+            if platform.system() == 'Windows':
+                cmd = unzip_zip + file
+                p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            else:
+                try:
+                    cmd_list = [unzip_zip[:-1], file]
+                    p = subprocess.Popen(cmd_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                except:
+                    cmd = unzip_zip + file
+                    p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         else:
             try:
                 cmd_list = [unzip_tgz[:-1], file]

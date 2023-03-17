@@ -32,6 +32,8 @@ def top_cdd():
                     by Chang Chuntao  -> Version : 1.23
     2022-10-10 :    + 新增Tables一级类
                     by Chang Chuntao  -> Version : 1.24
+    2023-03-17 :    > COSMIC -> LEO
+                    by Chang Chuntao  -> Version : 2.08
     """
     print("")
     print("    +----------------------------------FAST--------------------------------------+")
@@ -40,7 +42,7 @@ def top_cdd():
     print("    |    4 : RINEX                  5 : ERP                   6 : BIA_DCB_OBX    |")
     print("    |    7 : ION_TRO                8 : SINEX                 9 : CNES_AR        |")
     print("    |   10 : Time_Series           11 : Velocity_Fields      12 : SLR            |")
-    print("    |   13 : COSMIC                14 : PANDA                15 : GAMIT          |")
+    print("    |   13 : LEO                   14 : PANDA                15 : GAMIT          |")
     print("    |                                                                            |")
     print("    +----------------------------------------------------------------------------+")
     print("    |                                                                            |")
@@ -156,7 +158,10 @@ def sub_cdd(obj):
                     + COD_F_erp
                     + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
                     by Chang Chuntao  -> Version : 2.07
-    2023-02-27 :    + COD_F_ion
+    2023-03-17 :    + COD_F_ion # 2023-02-27
+                    > COSMIC -> LEO
+                    + GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3 / CHAMP_rnx / CHAMP_sp3
+                    + SWARM_rnx / SWARM_sp3
                     by Chang Chuntao  -> Version : 2.08
     """
     print("")
@@ -200,8 +205,8 @@ def sub_cdd(obj):
         print("    |                                                                            |")
         print("    |    5 : MGEX_WHU_F_clk         6 : MGEX_WHU_R_clk         7 : MGEX_WHU_U_clk|")
         print("    |    8 : MGEX_WHU_Hour_clk      9 : MGEX_SHA_F_clk        10 : MGEX_COD_F_clk|")
-        print("    |   11 : MGEX_GRG_F_clk        13 : MGEX_GFZ_R_clk        14 : GRE_GFZ_F_clk |")
-        print("    |   15 : GRE_COD_R_clk         16 : GLO_IGL_F_clk                            |")
+        print("    |   11 : MGEX_GRG_F_clk        12 : MGEX_GFZ_R_clk        13 : GRE_GFZ_F_clk |")
+        print("    |   14 : GRE_COD_R_clk         15 : GLO_IGL_F_clk                            |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 4:
@@ -216,6 +221,10 @@ def sub_cdd(obj):
         print("    |                                                                            |")
         print("    |    5 : MGEX_IGS_rnx           6 : MGEX_HK_cors           7 : GRE_IGS_01S   |")
         print("    |    8 : GCRE_MGEX_01S          9 : MGEX_EU_cors                             |")
+        print("    |                                                                            |")
+        print("    +------------------------------------SAT-------------------------------------+")
+        print("    |                                                                            |")
+        print("    |   16 : GRACE_sp3_rnx                                                       |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 5:
@@ -300,14 +309,20 @@ def sub_cdd(obj):
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 13:
-        print("    +-----------------------------------COSMIC-----------------------------------+")
+        print("    +------------------------------------LEO-------------------------------------+")
         print("    |                                                                            |")
-        print("    |    1 : C1_L1a_leoAtt          2 : C1_L1a_opnGps          3 : C1_L1a_podCrx |")
-        print("    |    4 : C1_L1b_atmPhs          5 : C1_L1b_gpsBit          6 : C1_L1b_ionPhs |")
-        print("    |    7 : C1_L1b_leoClk          8 : C1_L1b_leoOrb          9 : C1_L1b_podTec |")
-        print("    |   10 : C1_L1b_scnLv1                                                       |")
-        print("    |   11 : C2_L1a_leoAtt         12 : C2_L1a_opnGps         13 : C2_L1a_podCrx |")
-        print("    |   14 : C2_L1b_conPhs         15 : C2_L1b_leoOrb         16 : C2_L1b_podTc2 |")
+        print("    |    1 : GRACE_dat              2 : GRACE_rnxapp           3 : GRACE_fo_dat  |")
+        print("    |    4 : GRACE_fo1_sp3          5 : GRACE_fo2_sp3          6 : CHAMP_rnx     |")
+        print("    |    7 : CHAMP_sp3              8 : SWARM_rnx              9 : SWARM_sp3     |")
+        print("    |                                                                            |")
+        print("    +----------------------------------COSMIC------------------------------------+")
+        print("    |                                                                            |")
+        print("    |   10 : C1_L1a_leoAtt         11 : C1_L1a_opnGps         12 : C1_L1a_podCrx |")
+        print("    |   13 : C1_L1b_atmPhs         14 : C1_L1b_gpsBit         15 : C1_L1b_ionPhs |")
+        print("    |   16 : C1_L1b_leoClk         17 : C1_L1b_leoOrb         18 : C1_L1b_podTec |")
+        print("    |   19 : C1_L1b_scnLv1                                                       |")
+        print("    |   20 : C2_L1a_leoAtt         21 : C2_L1a_opnGps         22 : C2_L1a_podCrx |")
+        print("    |   23 : C2_L1b_conPhs         24 : C2_L1b_leoOrb         25 : C2_L1b_podTc2 |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 14:
@@ -330,6 +345,15 @@ def sub_cdd(obj):
         print("    +----------------------------------SOLUTION----------------------------------+")
         print("    |                                                                            |")
         print("    |   13 : IGS_hfile                                                           |")
+        print("    |                                                                            |")
+        print("    +----------------------------------------------------------------------------+")
+    elif obj == 16:
+        print("    +------------------------------------SAT-------------------------------------+")
+        print("    |                                                                            |")
+        print("    |    1 : GRACE                  2 : GRACE_FO1_sp3          3 : GRACE_FO2_sp3 |")
+        print("    |    4 : Gamit_dcb_dat          5 : Gamit_soltab           6 : Gamit_luntab  |")
+        print("    |    7 : Gamit_leap_sec         8 : Gamit_nutabl           9 : Gamit_antmod  |")
+        print("    |   10 : Gamit_svnav           11 : Gamit_rcvant          12 : Gamit_nbody   |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == "a":
@@ -462,7 +486,8 @@ def uncompress(urllist):
     print()
     isuncpmress = "y"
     for f in ftpsite:
-        if str(f).split(".")[-1] == "gz" or str(f).split(".")[-1] == "Z" or str(f).split(".")[-1] == "tgz":
+        if str(f).split(".")[-1] == "gz" or str(f).split(".")[-1] == "Z" or str(f).split(".")[-1] == "tgz"\
+                or str(f).split(".")[-1] == "zip" or str(f).split(".")[-1] == "ZIP":
             PrintGDD("是否解压文件？如需解压直接回车，若无需解压输入任意字符回车！ / Press enter to unzip!", "input")
             isuncpmress = input("     ")
             break

@@ -40,11 +40,15 @@ def getftp(t, y, d):
 
 def ReplaceTimeWildcard(string, spectime):
     """
-    2022-03-27 : * Replace time wild cards in string with specific date time
-                 by Jiang Kecai -> Version : 1.00
+    2022-03-27 :    * Replace time wild cards in string with specific date time
+                    by Jiang Kecai -> Version : 1.00
+    2023-03-17 :    + YYYY_F / YYYY_B / MONTH_F / MONTH_B / DAY_F/ DAY_B
+                    by Chang Chuntao  -> Version : 2.08
     """
     import datetime
     newstr = str(string)
+    spectime_B = spectime + datetime.timedelta(days=-1)
+    spectime_F = spectime + datetime.timedelta(days=1)
     # replace four digit GPS week
     if newstr.find('<GPSW>') >= 0:
         deltime = spectime - datetime.datetime(year=1980, month=1, day=6)
@@ -75,6 +79,24 @@ def ReplaceTimeWildcard(string, spectime):
     # replace two digit day in month
     if newstr.find('<DAY>') >= 0:
         newstr = newstr.replace('<DAY>', '%02d' % spectime.day)
+
+    # replace four digit year
+    if newstr.find('<YYYY_F>') >= 0:
+        newstr = newstr.replace('<YYYY_F>', '%04d' % spectime_F.year)
+    # replace two digit hour in day
+    if newstr.find('<MONTH_F>') >= 0:
+        newstr = newstr.replace('<MONTH_F>', '%02d' % spectime_F.month)
+    if newstr.find('<DAY_F>') >= 0:
+        newstr = newstr.replace('<DAY_F>', '%02d' % spectime_F.day)
+
+    # replace four digit year
+    if newstr.find('<YYYY_B>') >= 0:
+        newstr = newstr.replace('<YYYY_B>', '%04d' % spectime_B.year)
+    if newstr.find('<MONTH_B>') >= 0:
+        newstr = newstr.replace('<MONTH_B>', '%02d' % spectime_B.month)
+    # replace two digit day in month
+    if newstr.find('<DAY_B>') >= 0:
+        newstr = newstr.replace('<DAY_B>', '%02d' % spectime_B.day)
     # replace two digit hour in day
     if newstr.find('<HOUR>') >= 0:
         newstr = newstr.replace('<HOUR>', '%02d' % spectime.hour)

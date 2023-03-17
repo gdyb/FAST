@@ -97,35 +97,38 @@
                     + IGS_crd_snx / COD_sol_snx / ESA_sol_snx / GFZ_sol_snx / GRG_sol_snx / NGS_sol_snx / SIO_sol_snx
                     > MGEX_GFZ_F_obx -> MGEX_GFZ_R_obx
                     by Chang Chuntao  -> Version : 2.07
-    2023-02-27 :    + COD_F_ion
+    2023-03-17 :    + COD_F_ion # 2023-02-27
+                    > COSMIC -> LEO
+                    + GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3 / CHAMP_rnx / CHAMP_sp3
+                    + SWARM_rnx / SWARM_sp3
                     by Chang Chuntao  -> Version : 2.08
 """
 
-gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd4"]],                                   # 1 BRDC
+gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd4"]],  # 1 BRDC
 
-             ["SP3", ["GPS_IGS_sp3", "GPS_IGR_sp3", "GPS_IGU_sp3", "GPS_GRG_sp3",                                       # 2 SP3
+             ["SP3", ["GPS_IGS_sp3", "GPS_IGR_sp3", "GPS_IGU_sp3", "GPS_GRG_sp3",  # 2 SP3
 
                       "MGEX_WHU_F_sp3", "MGEX_WHU_R_sp3", "MGEX_WHU_U_sp3",
                       "MGEX_WHU_Hour_sp3", "MGEX_SHA_F_sp3", "MGEX_COD_F_sp3",
                       "MGEX_GRG_F_sp3", 'MGEX_GFZ_R_sp3', "GRE_GFZ_F_sp3",
                       'GRE_COD_R_sp3', 'GLO_IGL_F_sp3']],
 
-             ["CLK", ["GPS_IGS_clk", "GPS_IGR_clk", "GPS_GRG_clk", "GPS_IGS_clk_30s",                                   # 3 CLK
+             ["CLK", ["GPS_IGS_clk", "GPS_IGR_clk", "GPS_GRG_clk", "GPS_IGS_clk_30s",  # 3 CLK
 
                       "MGEX_WHU_F_clk", "MGEX_WHU_R_clk", "MGEX_WHU_U_clk",
                       "MGEX_WHU_Hour_clk", "MGEX_SHA_F_clk", 'MGEX_COD_F_clk',
                       "MGEX_GRG_F_clk", 'MGEX_GFZ_F_clk', 'GRE_GFZ_F_clk',
                       'GRE_COD_R_clk', 'GLO_IGL_F_clk']],
 
-             ["RINEX", ["GPS_IGS_rnx", "GPS_USA_cors", "GPS_HK_cors", "GPS_AU_cors",      # 4 RINEX
+             ["RINEX", ["GPS_IGS_rnx", "GPS_USA_cors", "GPS_HK_cors", "GPS_AU_cors",  # 4 RINEX
                         "MGEX_IGS_rnx", "MGEX_HK_cors", "GRE_IGS_01S", "GCRE_MGEX_01S", "MGEX_EU_cors"]],
 
              ["ERP", ["IGS_erp", "IGR_erp", "WHU_F_erp",
                       "COD_F_erp", "WHU_U_erp", "GFZ_R_erp",
-                      'COD_R_erp', "WHU_Hour_erp"]],               # 5 ERP
+                      'COD_R_erp', "WHU_Hour_erp"]],  # 5 ERP
 
-             ["BIA_DCB_OBX", ["GPS_COD_bia", "MGEX_COD_F_bia","MGEX_COD_R_bia",
-                              "MGEX_WHU_R_ABS_bia", "MGEX_WHU_R_OSB_bia", "MGEX_GFZ_R_bia",     # 6 BIA_DCB_OBX
+             ["BIA_DCB_OBX", ["GPS_COD_bia", "MGEX_COD_F_bia", "MGEX_COD_R_bia",
+                              "MGEX_WHU_R_ABS_bia", "MGEX_WHU_R_OSB_bia", "MGEX_GFZ_R_bia",  # 6 BIA_DCB_OBX
 
                               "GPS_COD_dcb", "MGEX_CAS_R_dcb",
                               "P1C1", "P1P2", "P2C2",
@@ -149,35 +152,38 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
                         "IVS_week_snx", "ILS_week_snx", "IDS_week_snx",
                         'IGS_crd_snx', 'COD_sol_snx', 'ESA_sol_snx',
                         'GFZ_sol_snx', 'GRG_sol_snx', 'NGS_sol_snx',
-                        'SIO_sol_snx']],                                                    # 8 SINEX
+                        'SIO_sol_snx']],  # 8 SINEX
 
-             ["CNES_AR", ["CNES_post", "CNES_realtime"]],                                                                # 9 CNES_AR
+             ["CNES_AR", ["CNES_post", "CNES_realtime"]],  # 9 CNES_AR
 
-             ["Time_Series", ["IGS14_TS_ENU", "IGS14_TS_XYZ", "Series_TS_Plot"]],                                        # 10 Time_Series
+             ["Time_Series", ["IGS14_TS_ENU", "IGS14_TS_XYZ", "Series_TS_Plot"]],  # 10 Time_Series
 
-             ["Velocity_Fields", ["IGS14_Venu", "IGS08_Venu", "PLATE_Venu"]],                                            # 11 Velocity_Fields
+             ["Velocity_Fields", ["IGS14_Venu", "IGS08_Venu", "PLATE_Venu"]],  # 11 Velocity_Fields
 
-             ["SLR", ["HY_SLR", "GRACE_SLR", "BEIDOU_SLR"]],                                                             # 12 SLR
+             ["SLR", ["HY_SLR", "GRACE_SLR", "BEIDOU_SLR"]],  # 12 SLR
 
-             ["COSMIC", ['C1_L1a_leoAtt', 'C1_L1a_opnGps', 'C1_L1a_podCrx',                                              # 13 COSMIC
-                         'C1_L1b_atmPhs', 'C1_L1b_gpsBit', 'C1_L1b_ionPhs',
-                         'C1_L1b_leoClk', 'C1_L1b_leoOrb', 'C1_L1b_podTec',
-                         'C1_L1b_scnLv1',
-                         'C2_L1a_leoAtt', 'C2_L1a_opnGps', 'C2_L1a_podCrx',
-                         'C2_L1b_conPhs', 'C2_L1b_leoOrb', 'C2_L1b_podTc2']],
+             ["LEO", ['GRACE_dat', 'GRACE_rnxapp', 'GRACE_fo_dat',  # 13 LEO
+                      'GRACE_fo1_sp3', 'GRACE_fo2_sp3', 'CHAMP_rnx',
+                      'CHAMP_sp3', 'SWARM_rnx', 'SWARM_sp3',
+                      'C1_L1a_leoAtt', 'C1_L1a_opnGps', 'C1_L1a_podCrx',
+                      'C1_L1b_atmPhs', 'C1_L1b_gpsBit', 'C1_L1b_ionPhs',
+                      'C1_L1b_leoClk', 'C1_L1b_leoOrb', 'C1_L1b_podTec',
+                      'C1_L1b_scnLv1',
+                      'C2_L1a_leoAtt', 'C2_L1a_opnGps', 'C2_L1a_podCrx',
+                      'C2_L1b_conPhs', 'C2_L1b_leoOrb', 'C2_L1b_podTc2']],
 
-             ['PANDA', ['Panda_jpleph_de405', 'Panda_poleut1', 'Panda_EGM',                                              # 14 PANDA
+             ['PANDA', ['Panda_jpleph_de405', 'Panda_poleut1', 'Panda_EGM',  # 14 PANDA
                         'Panda_oceanload', 'Panda_oceantide', 'Panda_utcdif',
                         'Panda_antnam', 'Panda_svnav', 'Panda_nutabl',
-                        'Panda_ut1tid', 'Panda_leap_sec', 'MGEX_IGS14_atx', "MGEX_IGS20_atx", "SW_EOP", 'Panda_gpsrapid']],
+                        'Panda_ut1tid', 'Panda_leap_sec', 'MGEX_IGS14_atx', "MGEX_IGS20_atx", "SW_EOP",
+                        'Panda_gpsrapid']],
 
-             ['GAMIT', ['Gamit_pmu_bull', 'Gamit_ut1usno', 'Gamit_poleusno',                                             # 15 GAMIT
+             ['GAMIT', ['Gamit_pmu_bull', 'Gamit_ut1usno', 'Gamit_poleusno',  # 15 GAMIT
                         'Gamit_dcb_dat', 'Gamit_soltab', 'Gamit_luntab',
                         'Gamit_leap_sec', 'Gamit_nutabl', 'Gamit_antmod',
                         'Gamit_svnav', 'Gamit_rcvant', 'Gamit_nbody',
                         'IGS_hfile']]
              ]
-
 
 # 2022-03-27 :  索引方式改为type:
 #               yd_type -> year doy / no_type -> none /  yds_type -> year doy site / ym_type -> year month / s_type -> site
@@ -190,7 +196,7 @@ ym_type = []
 s_type = []
 
 for gs_list in gnss_type:
-    if gs_list[0] in ['BRDC', "SP3", "CLK", "ERP", "CNES_AR", "SLR", "COSMIC"]:
+    if gs_list[0] in ['BRDC', "SP3", "CLK", "ERP", "CNES_AR", "SLR", "LEO"]:
         for gs_type in gs_list[1]:
             yd_type.append(gs_type)
 
@@ -234,11 +240,11 @@ for gs_list in gnss_type:
             else:
                 no_type.append(gs_type)
 
-
 # 2022-03-27 : 每个二级目录的个数 by Chang Chuntao -> Version : 1.00
 objnum = []
 for sub_type in gnss_type:
     objnum.append(len(sub_type[1]))
+
 
 # # 2022-03-27 : 输入为年， 起始年积日， 终止年积日 的数据类型 by Chang Chuntao -> Version : 1.23
 # objneedydqd2 = [1, 2, 4, 5, 6, 7, 8, 9, 11, 14, 15, 16, 18]
