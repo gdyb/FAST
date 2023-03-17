@@ -3,9 +3,9 @@
 # GNSS_TYPE      : ALL TYPE OF GNSS DATA
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.07
+# Latest Version : 2.08
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-02-10 - Version 2.07
+# Date           : 2023-03-17 - Version 2.08
 
 
 """
@@ -198,7 +198,10 @@ s_type = []
 for gs_list in gnss_type:
     if gs_list[0] in ['BRDC', "SP3", "CLK", "ERP", "CNES_AR", "SLR", "LEO"]:
         for gs_type in gs_list[1]:
-            yd_type.append(gs_type)
+            if gs_type != 'GRACE_rnxapp':
+                yd_type.append(gs_type)
+            else:
+                no_type.append(gs_type)
 
     elif gs_list[0] == 'ION_TRO':
         for gs_type in gs_list[1]:

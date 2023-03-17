@@ -3,9 +3,9 @@
 # CDD_Sub        : Format conversion subroutine
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.06
+# Latest Version : 2.08
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-01-14 - Version 2.06
+# Date           : 2023-03-17 - Version 2.08
 
 import os
 import platform

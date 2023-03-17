@@ -132,7 +132,7 @@ def geturl(cddarg):
             typeurl.append(ftpsitelist)
 
         # 数据类型为输入年日
-        if dt in yd_type:
+        elif dt in yd_type:
             PrintGDD("下载时间为" + str(cddarg['year']) + "年，年积日" + str(cddarg['day1']) + "至" + str(
                 cddarg['day2']) + "\n",
                      "normal")

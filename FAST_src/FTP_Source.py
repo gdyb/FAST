@@ -5,7 +5,7 @@
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
 # Latest Version : 2.08
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-03-12 - Version 2.08
+# Date           : 2023-03-17 - Version 2.08
 import datetime
 
 nowTime = datetime.datetime.utcnow()

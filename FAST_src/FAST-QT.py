@@ -25,7 +25,7 @@ version_time = ['2022-11-08',
                 '2022-12-04',
                 '2023-01-14',
                 '2023-02-10',
-                '2023-03-12']
+                '2023-03-17']
 
 if getattr(sys, 'frozen', False):
     dirname = os.path.dirname(sys.executable)

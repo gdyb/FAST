@@ -5,7 +5,7 @@
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
 # Latest Version : 2.08
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-03-12 - Version 2.08
+# Date           : 2023-03-17 - Version 2.08
 
 def FAST():
     """
@@ -149,8 +149,11 @@ def FAST():
                     by Chang Chuntao  # 2023-02-10
 
     Version 2.08    > 修复仅需站点模式,增加<SITE_SHORT>标识
-                    + COD_F_ion
-                    by Chang Chuntao  # 2023-03-12
+                    + COD_F_ion# 2023-02-27
+                    > COSMIC -> LEO
+                    + GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3 / CHAMP_rnx / CHAMP_sp3
+                    + SWARM_rnx / SWARM_sp3
+                    by Chang Chuntao  # 2023-03-17
     """
     import sys
     from ARG_Mode import ARG_Mode
