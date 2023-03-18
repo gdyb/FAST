@@ -156,6 +156,10 @@ def isinpath(file):  # 判断相关文件是否存在
     filelowogz = filelowo + '.gz'
     filelowdZ = filelowd + '.Z'
     filelowdgz = filelowd + '.gz'
+    filelowpZ = filelowp + '.Z'
+    filelowpgz = filelowp + '.gz'
+    filelownZ = filelown + '.Z'
+    filelowngz = filelown + '.gz'
     if os.path.exists(file[0:-2]) or os.path.exists(file[0:-3]) \
             or os.path.exists(file) or os.path.exists(projectFileLowZ) or os.path.exists(projectFileLowGz) \
             or os.path.exists(highrate_file) or os.path.exists(highrate_file_mgex) or os.path.exists(filelowo) \
@@ -163,7 +167,8 @@ def isinpath(file):  # 判断相关文件是否存在
             or os.path.exists(fileprolow) or os.path.exists(ionfile) or os.path.exists(projectFileLow) \
             or os.path.exists(fileUnzip) or os.path.exists(projectFileUpperGz) or os.path.exists(projectFileUpperZ) \
             or os.path.exists(projectFileUpper) or os.path.exists(filelowoZ) or os.path.exists(filelowogz)\
-            or os.path.exists(filelowdZ) or os.path.exists(filelowdgz):
+            or os.path.exists(filelowdZ) or os.path.exists(filelowdgz) or os.path.exists(filelowpZ) \
+            or os.path.exists(filelowpgz) or os.path.exists(filelownZ) or os.path.exists(filelowngz):
         return True
     else:
         return False
