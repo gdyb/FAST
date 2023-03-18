@@ -151,8 +151,11 @@ def FAST():
     Version 2.08    > 修复仅需站点模式,增加<SITE_SHORT>标识
                     + COD_F_ion# 2023-02-27
                     > COSMIC -> LEO
-                    + GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3 / CHAMP_rnx / CHAMP_sp3
-                    + SWARM_rnx / SWARM_sp3
+                    + LEO -> GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3
+                    + LEO -> CHAMP_rnx / CHAMP_sp3 / SWARM_rnx / SWARM_sp3
+                    > 重写本地文件判定
+                    + 增加zip解压
+                    > GFZ多系统数据地址更新(IGS20) -> MGEX_GFZ_R_sp3 / MGEX_GFZ_F_clk / GFZ_R_erp / MGEX_GFZ_R_bia
                     by Chang Chuntao  # 2023-03-17
     """
     import sys

@@ -29,7 +29,7 @@ def isinpath(file):  # 判断相关文件是否存在
                     by Chang Chuntao    -> Version : 2.03
     2023-01-14 :    > 修正SP3 CLK判定
                     by Chang Chuntao    -> Version : 2.06
-    2023-03-17 :    > 重写文件判定
+    2023-03-17 :    > 重写本地文件判定
                     by Chang Chuntao    -> Version : 2.08
     """
     orifile = str(file).split(".")[0]

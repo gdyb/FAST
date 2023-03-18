@@ -79,7 +79,7 @@ for p in plate:
                     by Chang Chuntao  -> Version : 2.04
     2022-12-04 :    > MGEX_WUH_sp3 -> MGEX_WHU_F_sp3 / MGEX_WUHR_sp3 -> MGEX_WHU_R_sp3 / MGEX_WUHU_sp3 -> MGEX_WHU_U_sp3
                     > MGEX_WUH_Hour_sp3 -> MGEX_WHU_Hour_sp3 / MGEX_SHA_sp3 -> MGEX_SHA_F_sp3 / MGEX_COD_sp3 -> MGEX_COD_F_sp3
-                    > MGEX_GRG_sp3 -> MGEX_GRG_F_sp3 / MGEX_GFZ_R_sp3 -> MGEX_GFZR_sp3 / GRE_CODR_sp3 -> GRE_COD_R_sp3
+                    > MGEX_GRG_sp3 -> MGEX_GRG_F_sp3 / MGEX_GFZR_sp3 -> MGEX_GFZ_R_sp3 / GRE_CODR_sp3 -> GRE_COD_R_sp3
                     > GLO_IGL_sp3 -> GLO_IGL_F_sp3
                     + MGEX_GFZ_F_sp3
                     > MGEX_WUH_clk -> MGEX_WHU_F_clk / MGEX_WUHR_clk -> MGEX_WHU_R_clk / MGEX_WUHU_clk -> MGEX_WHU_U_clk
@@ -113,8 +113,10 @@ for p in plate:
     2023-03-12 :    > 修复仅需站点模式,增加<SITE_SHORT>标识 # 2023-02-27
                     + COD_F_ion # 2023-02-27
                     > 调整优先级 ***
-                    + GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3 / CHAMP_rnx / CHAMP_sp3
-                    + SWARM_rnx / SWARM_sp3
+                    > COSMIC -> LEO
+                    + LEO -> GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3 
+                    + LEO -> CHAMP_rnx / CHAMP_sp3 / SWARM_rnx / SWARM_sp3
+                    > GFZ多系统数据地址更新(IGS20) -> MGEX_GFZ_R_sp3 / MGEX_GFZ_F_clk / GFZ_R_erp / MGEX_GFZ_R_bia
                     by Chang Chuntao  -> Version : 2.08
 '''
 
@@ -231,7 +233,11 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
          "GRE_GFZ_F_sp3": ['ftp://ftp.gfz-potsdam.de/pub/GNSS/products/final/w<GPSW>/gfz<GPSWD>.sp3.Z',
                            'ftp://ftp.gfz-potsdam.de/pub/GNSS/w<GPSW>/GFZ0OPSFIN_<YYYY><DOY>0000_01D_15M_ORB.SP3.gz'],
 
-         "MGEX_GFZ_R_sp3": ["ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>/"
+         "MGEX_GFZ_R_sp3": ["ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>_IGS20/"
+                            "GBM0MGXRAP_<YYYY><DOY>0000_01D_05M_ORB.SP3.gz",
+                            "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>/"
+                            "GBM0MGXRAP_<YYYY><DOY>0000_01D_05M_ORB.SP3.gz",
+                            "ftp://ftp.gfz-potsdam.de/pub/GNSS/products/mgnss/<GPSW>_IGS20/"
                             "GBM0MGXRAP_<YYYY><DOY>0000_01D_05M_ORB.SP3.gz",
                             "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgnss/<GPSW>/"
                             "GBM0MGXRAP_<YYYY><DOY>0000_01D_05M_ORB.SP3.gz"
@@ -380,6 +386,7 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
                            'ftp://ftp.gfz-potsdam.de/pub/GNSS/products/final/w<GPSW>/gfz<GPSWD>.clk.Z'],
 
          "MGEX_GFZ_R_clk": [
+             "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>_IGS20/GBM0MGXRAP_<YYYY><DOY>0000_01D_30S_CLK.CLK.gz",
              "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>/GBM0MGXRAP_<YYYY><DOY>0000_01D_30S_CLK.CLK.gz",
              "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgnss/<GPSW>/GBM0MGXRAP_<YYYY><DOY>0000_01D_30S_CLK.CLK.gz"],
 
@@ -471,7 +478,7 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
          "COD_F_erp": ["ftp://igs.ign.fr/pub/igs/products/mgex/<GPSW>/COD0MGXFIN_<YYYY><DOY>0000_03D_12H_ERP.ERP.gz"],
 
          "GFZ_R_erp": [
-             "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>/GBM0MGXRAP_<YYYY><DOY>0000_01D_01D_ERP.ERP.gz",
+             "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>_IGS20/GBM0MGXRAP_<YYYY><DOY>0000_01D_01D_ERP.ERP.gz",
              "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgnss/<GPSW>/GBM0MGXRAP_<YYYY><DOY>0000_01D_01D_ERP.ERP.gz",
              "ftp://ftp.gfz-potsdam.de//pub/GNSS/products/mgex/<GPSW>/GBM0MGXRAP_<YYYY><DOY>0000_01D_01D_ERP.ERP.Z"],
 
@@ -549,6 +556,7 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
                             "COD0MGXFIN_<YYYY><DOY>0000_01D_01D_OSB.BIA.gz"],
 
          "MGEX_GFZ_R_bia": [
+             "ftp://ftp.gfz-potsdam.de/pub/GNSS/products/mgnss/<GPSW>_IGS20/GBM0MGXRAP_<YYYY><DOY>0000_01D_01D_OSB.BIA.gz",
              "ftp://ftp.gfz-potsdam.de/pub/GNSS/products/mgnss/<GPSW>/GBM0MGXRAP_<YYYY><DOY>0000_01D_01D_OSB.BIA.gz"],
 
          "IGSG_ion": ["ftp://ftp.gipp.org.cn/product/ionex/<YYYY>/<DOY>/igsg<DOY>0.<YY>i.Z",
