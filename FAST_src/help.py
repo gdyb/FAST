@@ -3,9 +3,9 @@
 # Help           : Help for all mode
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.08
+# Latest Version : 2.09
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-03-12 - Version 2.08
+# Date           : 2023-06-30 - Version 2.09
 
 from FAST_Print import PrintGDD
 from GNSS_TYPE import gnss_type

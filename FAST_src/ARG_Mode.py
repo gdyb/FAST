@@ -3,9 +3,9 @@
 # ARG_Mode       : Program running with arguments
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 1.10
+# Latest Version : 2.09
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2022.04.12 - Version 1.10
+# Date           : 2023-06-30 - Version 2.09
 import datetime
 import os
 from ARG_Sub import GET_ARG, ARG_ifwrong, geturl

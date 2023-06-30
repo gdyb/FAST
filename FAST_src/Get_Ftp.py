@@ -3,9 +3,9 @@
 # GET_Ftp        : Reconstruct FTP address
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.08
+# Latest Version : 2.09
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-03-17 - Version 2.08
+# Date           : 2023-06-30 - Version 2.09
 
 
 from datetime import datetime, timedelta
