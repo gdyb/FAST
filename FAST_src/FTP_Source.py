@@ -706,10 +706,12 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
                         "ftp://edc.dgfi.tum.de/slr/data/npt_crd/beidou3m9/<YYYY>/beidou3m9_<YYYY><MONTH>.npt",
                         "ftp://edc.dgfi.tum.de/slr/data/npt_crd/beidou3m9/<YYYY>/beidou3m9_<YYYY><MONTH><DAY>.npt"],
 
-         "IGS_zpd": ["ftp://igs.gnsswhu.cn/pub/gps/products/troposphere/new/<YYYY>/<DOY>/<SITE><DOY>0.<YY>zpd.gz",
-                     "--ftp-user anonymous --ftp-password cctcasm@163.com "
-                     "ftps://gdc.cddis.eosdis.nasa.gov/gnss/products/troposphere/zpd/<YYYY>/<DOY>/<SITE><DOY>0.<YY"
-                     ">zpd.gz"],
+         "IGS_zpd": [
+             'ftp://igs.gnsswhu.cn/pub/gps/products/troposphere/new/<YYYY>/<DOY>/IGS0OPSFIN_<YYYY><DOY>0000_01D_05M_<SITE_LONG>_TRO.TRO.gz',
+             "ftp://igs.gnsswhu.cn/pub/gps/products/troposphere/new/<YYYY>/<DOY>/<SITE><DOY>0.<YY>zpd.gz",
+             "--ftp-user anonymous --ftp-password cctcasm@163.com "
+             "ftps://gdc.cddis.eosdis.nasa.gov/gnss/products/troposphere/zpd/<YYYY>/<DOY>/<SITE><DOY>0.<YY"
+             ">zpd.gz"],
 
          "COD_tro": ["ftp://igs.gnsswhu.cn/pub/gps/products/<GPSW>/COD0OPSFIN_<YYYY><DOY>0000_01D_01H_TRO.TRO.gz",
                      "ftp://igs.gnsswhu.cn/pub/gps/products/<GPSW>/cod<GPSWD>.tro.Z",
