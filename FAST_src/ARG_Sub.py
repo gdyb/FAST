@@ -11,56 +11,56 @@ import sys
 from FAST_Print import PrintGDD
 from FTP_Source import FTP_S
 from Format import unzipfile, unzipfile_highrate_rinex2, unzipfile_highrate_rinex3
-from GNSS_TYPE import isinGNSStype, yd_type, yds_type, ym_type, s_type, no_type
+from GNSS_TYPE import isinGNSStype, yd_type, yds_type, ym_type, s_type, no_type, ydsh_type, ydh_type
 import getopt
 from Get_Ftp import getftp, getSite, replaceSiteStr, ReplaceTimeWildcard
-from help import Supported_Data, arg_options, arg_help
+from help import Supported_Data, arg_options, arg_help, version, version_time
 
 
-def GET_ARG(argument, cddarg):
+def GET_ARG(cddarg):
     """
-    2022-03-27 : 获取输入参数 by Chang Chuntao -> Version : 1.00
+    2022-03-27 :    * 获取输入参数
+                    by Chang Chuntao -> Version : 1.00
+    2023-06-30 :    * 更换参数读取方式， -start 对应为 -s
+                    + "-i", "-site", 输入站点
+                    + "-h", "-hour", 输入小时
+                    by Chang Chuntao -> Version : 2.09
     """
-    try:
-        opts, args = getopt.getopt(argument, "hvt:l::y::o::e::d::m::f::p::u::",
-                                   ["type=", "loc=", "year=", "day1=", "day2=", "day=", "month=", "file=", "process=",
-                                    "uncompress="])
-    except getopt.GetoptError:
-        PrintGDD("参数类型输入错误！", "fail")
-        print()
-        arg_options()
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
+    args = sys.argv
+    for argIndex in range(len(args)):
+        nowArg = args[argIndex]
+        if '-h' == nowArg:
             arg_help()
             sys.exit()
-        elif opt == '-v' or opt == '-version':
-            print("3.0.0")
+        elif nowArg == '-v' or nowArg == '-version' or nowArg == '-V':
+            print(version[-1])
+            print(version_time[-1])
             sys.exit()
-        elif opt in ("-t", "--type"):
-            cddarg["datatype"] = arg
-        elif opt in ("-y", "--year"):
-            cddarg['year'] = int(arg)
-        elif opt in ("-l", "--loc"):
-            cddarg["loc"] = arg
-        elif opt in ("-o", "--day1"):
-            cddarg["day1"] = int(arg)
-        elif opt in ("-e", "--day2"):
-            cddarg["day2"] = int(arg)
-        elif opt in ("-d", "--day"):
-            cddarg["day1"] = int(arg)
-            cddarg["day2"] = int(arg)
-        elif opt in ("-m", "--month"):
-            cddarg["month"] = int(arg)
-        elif opt in ("-f", "--file"):
-            cddarg["file"] = arg
-        elif opt in ("-p", "--process"):
-            cddarg["process"] = int(arg)
-        elif opt in ("-u", "--uncompress"):
-            cddarg["uncompress"] = arg
-        # elif opt in ("-s", "--site"):
-        #     cddarg["site"] = arg.split(",")
-    # print(cddarg)
+        elif nowArg in ["-t", "-type"]:
+            cddarg["datatype"] = args[argIndex + 1]
+        elif nowArg in ["-y", "-year"]:
+            cddarg["year"] = int(args[argIndex + 1])
+        elif nowArg in ["-l", "-loc"]:
+            cddarg["loc"] = args[argIndex + 1]
+        elif nowArg in ["-d", "-day"]:
+            cddarg["day1"] = int(args[argIndex + 1])
+            cddarg["day2"] = int(args[argIndex + 1])
+        elif nowArg in ["-s", "-day1", "-start"]:
+            cddarg["day1"] = int(args[argIndex + 1])
+        elif nowArg in ["-e", "-day2", "-end"]:
+            cddarg["day2"] = int(args[argIndex + 1])
+        elif nowArg in ["-m", "-month"]:
+            cddarg["month"] = int(args[argIndex + 1])
+        elif nowArg in ["-hour"]:
+            cddarg["hour"] = int(args[argIndex + 1])
+        elif nowArg in ["-f", "-file"]:
+            cddarg["file"] = args[argIndex + 1]
+        elif nowArg in ["-p", "-process"]:
+            cddarg["process"] = int(args[argIndex + 1])
+        elif nowArg in ["-u", "-uncompress"]:
+            cddarg["uncompress"] = int(args[argIndex + 1])
+        elif nowArg in ["-i", "-site"]:
+            cddarg["file"] = args[argIndex + 1].replace(',', ' ')
     return cddarg
 
 
@@ -90,7 +90,7 @@ def ARG_ifwrong(cddarg):  # 判断输入参数正确性
                             sys.exit(2)
                 if dt in yds_type or dt in s_type:
                     if cddarg['file'] == "" and cddarg['site'] == "":
-                        PrintGDD("本类型需要输入文件位置参数或站点参数，请指定[-f <file>]或者[-s <site>]！", "fail")
+                        PrintGDD("本类型需要输入文件位置参数或站点参数，请指定[-f <file>]或者[-i <site>]！", "fail")
                         sys.exit(2)
         else:
             PrintGDD(dt + "数据类型不存在！", "fail")
@@ -120,6 +120,8 @@ def geturl(cddarg):
                     by Chang Chuntao  -> Version : 2.01
     2023-03-12 :    > 修复仅需站点模式
                     by Chang Chuntao  -> Version : 2.08
+    2023-06-30 :    + 增加输入小时模式
+                    by Chang Chuntao  -> Version : 2.09
     """
     urllist = []
     for dt in str(cddarg['datatype']).split(","):
@@ -151,6 +153,7 @@ def geturl(cddarg):
                      "normal")
             print("")
             cddarg['site'] = getSite(cddarg['file'], dt)
+
             for day in range(cddarg['day1'], cddarg['day2'] + 1):
                 ftpsitelist = getftp(dt, cddarg['year'], day)
                 for siteInList in cddarg['site']:
@@ -161,7 +164,7 @@ def geturl(cddarg):
                     typeurl.append(siteftp)  # 按天下载
 
         # 数据类型为输入年月文件
-        elif dt in ym_type:
+        elif dt in ym_type and dt != "IVS_week_snx":
             PrintGDD("下载时间为" + str(cddarg['year']) + "年,月" + str(cddarg['month']) + "\n",
                      "normal")
             print("")
@@ -171,7 +174,6 @@ def geturl(cddarg):
                 ym_datetime = datetime.datetime(cddarg['year'], cddarg['month'], 1)
                 for ftp in ftpsite:
                     ftp = ReplaceTimeWildcard(ftp, ym_datetime)
-
                     typeurl.append([ftp])
 
         # 数据类型为输入站点文件
@@ -186,7 +188,38 @@ def geturl(cddarg):
                         siteftp.append(ftpInList)
                     typeurl.append(siteftp)  # 按天下载
 
+        # 数据类型为输入年日时
+        elif dt in ydh_type:
+            PrintGDD("下载时间为" + str(cddarg['year']) + "年，年积日" + str(cddarg['day1']) + "至" + str(
+                cddarg['day2']) + "\n",
+                     "normal")
+            for day in range(cddarg['day1'], cddarg['day2'] + 1):
+                ftpsitelist = getftp(dt, cddarg['year'], day)
+                url = []
+                if len(ftpsitelist) != 0:
+                    for ftpsite in ftpsitelist:
+                        url.append(ftpsite)
+                    typeurl.append(url)
+
+        # 数据类型为输入年日小时站点文件
+        elif dt in ydsh_type:
+            PrintGDD("下载时间为" + str(cddarg['year']) + "年，年积日" + str(cddarg['day1']) + "至" + str(
+                cddarg['day2']) + "\n",
+                     "normal")
+            print("")
+            cddarg['site'] = getSite(cddarg['file'], dt)
+            for day in range(cddarg['day1'], cddarg['day2'] + 1):
+                ftpsitelist = getftp(dt, cddarg['year'], day,
+                                         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+                                          22, 23])  # 通过数据类型与下载时间获取完整下载地址
+                for siteInList in cddarg['site']:
+                    siteftp = []
+                    for ftpInList in ftpsitelist:
+                        ftpInList = replaceSiteStr(ftpInList, siteInList)
+                        siteftp.append(ftpInList)
+                    typeurl.append(siteftp)  # 按天下载
         urllist.append(typeurl)
+
     return urllist
 
 

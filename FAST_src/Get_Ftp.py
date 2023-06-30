@@ -14,13 +14,15 @@ from MGEX_name import mgex
 from GNSS_Timestran import *
 
 
-def getftp(t, y, d):
+def getftp(t, y, d, hour=None):
     """
     2022-03-27 : * 通过数据类型、年、年积日，获取下载列表，并调用ReplaceTimeWildcard生成下载链接list
                  by Chang Chuntao -> Version : 1.00
     2022-11-02 : > 添加DORIS判断
                  by Chang Chuntao -> Version : 1.25
     """
+    if hour is None:
+        hour = [0]
     yeard1 = '%04d' % y + '-01-01 00:00:00'
     yeard1 = datetime.datetime.strptime(yeard1, '%Y-%m-%d %H:%M:%S')
     spectime = yeard1 + timedelta(days=d - 1)
@@ -30,11 +32,15 @@ def getftp(t, y, d):
         if dayofweek == 0:
             ftpsite = FTP_S[t]
             for fd in ftpsite:
-                ftpsiteout.append(ReplaceTimeWildcard(fd, spectime))
+                for nowHour in hour:
+                    nowSpectime = spectime + datetime.timedelta(hours=nowHour)
+                    ftpsiteout.append(ReplaceTimeWildcard(fd, nowSpectime))
     else:
         ftpsite = FTP_S[t]
         for fd in ftpsite:
-            ftpsiteout.append(ReplaceTimeWildcard(fd, spectime))
+                for nowHour in hour:
+                    nowSpectime = spectime + datetime.timedelta(hours=nowHour)
+                    ftpsiteout.append(ReplaceTimeWildcard(fd, nowSpectime))
     return ftpsiteout
 
 

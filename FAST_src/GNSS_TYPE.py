@@ -117,8 +117,9 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
 
                       "MGEX_WHU_F_clk", "MGEX_WHU_R_clk", "MGEX_WHU_U_clk",
                       "MGEX_WHU_Hour_clk", "MGEX_SHA_F_clk", 'MGEX_COD_F_clk',
-                      "MGEX_GRG_F_clk", 'MGEX_GFZ_F_clk', 'GRE_GFZ_F_clk',
-                      'GRE_COD_R_clk', 'GLO_IGL_F_clk']],
+                      "MGEX_GRG_F_clk", 'MGEX_GFZ_R_clk', 'GRE_GFZ_F_clk',
+                      'GRE_COD_R_clk', 'GLO_IGL_F_clk',
+                      'GRE_COD_F_clk_30s']],
 
              ["RINEX", ["GPS_IGS_rnx", "GPS_USA_cors", "GPS_HK_cors", "GPS_AU_cors",  # 4 RINEX
                         "MGEX_IGS_rnx", "MGEX_HK_cors", "GRE_IGS_01S", "GCRE_MGEX_01S", "MGEX_EU_cors"]],
@@ -127,8 +128,9 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
                       "COD_F_erp", "WHU_U_erp", "GFZ_R_erp",
                       'COD_R_erp', "WHU_Hour_erp"]],  # 5 ERP
 
-             ["BIA_DCB_OBX", ["GPS_COD_bia", "MGEX_COD_F_bia", "MGEX_COD_R_bia",
-                              "MGEX_WHU_R_ABS_bia", "MGEX_WHU_R_OSB_bia", "MGEX_GFZ_R_bia",  # 6 BIA_DCB_OBX
+             ["BIA_DCB_OBX", ["GPS_COD_F_osb",  "GE_GRG_F_osb", "GRE_COD_R_osb",
+                              'MGEX_WHU_F_osb', "MGEX_WHU_R_osb", "MGEX_WHU_R_abs",
+                              "MGEX_COD_F_osb", "MGEX_GFZ_R_osb",   # 6 BIA_DCB_OBX
 
                               "GPS_COD_dcb", "MGEX_CAS_R_dcb",
                               "P1C1", "P1P2", "P2C2",
@@ -142,7 +144,6 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
                           "UQRG_ion", "UPRG_ion", "JPLG_ion",
                           "JPRG_ion", "CASG_ion", "CARG_ion",
                           "ESAG_ion", "ESRG_ion",
-                          "COD_F_ion",
 
                           "IGS_zpd", "COD_tro", "JPL_tro",
                           "GRID_1x1_VMF3", "GRID_2.5x2_VMF1", "GRID_5x5_VMF3",
@@ -194,14 +195,19 @@ no_type = []
 yds_type = []
 ym_type = []
 s_type = []
+ydsh_type = []
+ydh_type = []
 
 for gs_list in gnss_type:
     if gs_list[0] in ['BRDC', "SP3", "CLK", "ERP", "CNES_AR", "SLR", "LEO"]:
         for gs_type in gs_list[1]:
-            if gs_type != 'GRACE_rnxapp':
-                yd_type.append(gs_type)
-            else:
+            if gs_type == 'GRACE_rnxapp':
                 no_type.append(gs_type)
+            elif gs_type in ["MGEX_WHU_U_sp3", "MGEX_WHU_U_clk", "MGEX_WHU_Hour_sp3", "MGEX_WHU_Hour_clk", "WHU_U_erp",
+                             "WHU_Hour_erp"]:
+                ydh_type.append(gs_type)
+            else:
+                yd_type.append(gs_type)
 
     elif gs_list[0] == 'ION_TRO':
         for gs_type in gs_list[1]:
@@ -214,12 +220,17 @@ for gs_list in gnss_type:
         for gs_type in gs_list[1]:
             if gs_type in ["P1C1", "P1P2", "P2C2"]:
                 ym_type.append(gs_type)
+            elif gs_type in ["MGEX_WHU_U_obx"]:
+                ydh_type.append(gs_type)
             else:
                 yd_type.append(gs_type)
 
     elif gs_list[0] == 'RINEX':
         for gs_type in gs_list[1]:
-            yds_type.append(gs_type)
+            if gs_type in ['GRE_IGS_01S', "GCRE_MGEX_01S"]:
+                ydsh_type.append(gs_type)
+            else:
+                yds_type.append(gs_type)
 
     elif gs_list[0] == 'SINEX':
         for gs_type in gs_list[1]:
@@ -247,20 +258,6 @@ for gs_list in gnss_type:
 objnum = []
 for sub_type in gnss_type:
     objnum.append(len(sub_type[1]))
-
-
-# # 2022-03-27 : 输入为年， 起始年积日， 终止年积日 的数据类型 by Chang Chuntao -> Version : 1.23
-# objneedydqd2 = [1, 2, 4, 5, 6, 7, 8, 9, 11, 14, 15, 16, 18]
-#
-# # 2022-03-27 : 输入为年， 起始年积日， 终止年积日, 站点文件 的数据类型 by Chang Chuntao -> Version : 1.00
-# objneedyd1d2loc = [3]
-#
-# # 2022-8-04 : 输入为站点文件的数据类型 by Chang Chuntao -> Version : 1.19
-# objneedloc = [12]
-#
-# # 2022-07-13 : 无需输入 的数据类型 by Chang Chuntao -> Version : 1.16
-# objneedn = [10, 13, 17, 19]
-
 
 def isinGNSStype(datatype):
     """

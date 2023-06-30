@@ -13,10 +13,10 @@ from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QApplication, QFrame, QWid
     QPushButton, QLineEdit, QVBoxLayout, QDateTimeEdit
 
 from QT_Frame import FramelessWindow
-from GNSS_TYPE import gnss_type, yd_type, ym_type, no_type, yds_type, s_type
+from GNSS_TYPE import gnss_type, yd_type, ym_type, no_type, yds_type, s_type, ydsh_type, ydh_type
 import qdarkstyle
 
-version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08]
+version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09]
 version_time = ['2022-11-08',
                 '2022-11-09',
                 '2022-11-10',
@@ -25,7 +25,8 @@ version_time = ['2022-11-08',
                 '2022-12-04',
                 '2023-01-14',
                 '2023-02-10',
-                '2023-03-17']
+                '2023-03-17',
+                '2023-06-30']
 
 if getattr(sys, 'frozen', False):
     dirname = os.path.dirname(sys.executable)
@@ -55,7 +56,8 @@ class Worker(QThread):
                     line = line.decode('gbk')
                     if 'Windows' not in line and 'wget' not in line and 'done' not in line and 'listing' not in line and 'required' not in line \
                             and '正在下载文件' not in line and '正在开始下载' not in line and len(
-                        line.replace(' ', '')) != 0 and 'gzip' not in line and 'No such file or directory' not in line and\
+                        line.replace(' ',
+                                     '')) != 0 and 'gzip' not in line and 'No such file or directory' not in line and \
                             '! Notice ! splicing RINEX files' not in line:
                         self.sig.emit(line)
                 if PID == 0:
@@ -86,7 +88,7 @@ class mainWindow(QMainWindow):
     move_Flag = False
     Window_Width = 1150
     Window_Length = 1000
-    Window_Title = 'FAST-大地测量数据下载软件V2.0'
+    # Window_Title = 'FAST-大地测量数据下载软件V2.0'
 
     def __init__(self):
         super().__init__()  # 继承类
@@ -97,7 +99,7 @@ class mainWindow(QMainWindow):
 
         # self.setWindowFlag(Qt.FramelessWindowHint)
         #
-        self.setWindowTitle(self.Window_Title)
+        # self.setWindowTitle(self.Window_Title)
         global font
         font = QtGui.QFont()
         font.setPointSize(9)
@@ -127,7 +129,7 @@ class mainWindow(QMainWindow):
 
         # ----------------左侧控件布局----------------
         datetime_Label_box = QHBoxLayout()
-        datetime_Label = QLabel("UTC Datetime")
+        datetime_Label = QLabel("GPS Datetime")
         datetime_Label.setFont(font)
         datetime_Label.setAlignment(Qt.AlignCenter)
         datetime_Label_box.addWidget(datetime_Label)
@@ -404,70 +406,97 @@ class mainWindow(QMainWindow):
         self.end_doy_line.setMinimumSize(QSize(choose_size, choose_h))
         type_choose_lay.addWidget(self.end_doy_line, 3, 4, 1, 2)
 
+        site_name_lable = QLabel('站点名称')
+        site_name_lable.setFont(font)
+        site_name_lable.setAlignment(Qt.AlignRight)
+        site_name_lable.setMaximumSize(QSize(lable_size, lable_h))
+        type_choose_lay.addWidget(site_name_lable, 4, 0)
+
+        self.site_name_line = QLineEdit(self)
+        self.site_name_line.setFont(font)
+        self.site_name_line.setPlaceholderText("按逗号分割")
+        self.site_name_line.setMinimumSize(QSize(lable_size, choose_h))
+        type_choose_lay.addWidget(self.site_name_line, 4, 1, 1, 2)
+
+        hour_lable = QLabel('下载小时')
+        hour_lable.setFont(font)
+        hour_lable.setAlignment(Qt.AlignRight)
+        hour_lable.setMaximumSize(QSize(lable_size, lable_h))
+        type_choose_lay.addWidget(hour_lable, 4, 3)
+
+        self.hour_combo = QComboBox(self)
+        for hour_combo_counter in range(0, 24):
+            self.hour_combo.addItem(str(hour_combo_counter))
+        self.hour_combo.setFont(font)
+        self.hour_combo.setCurrentIndex(0)
+        self.hour_combo.setMinimumSize(QSize(choose_size, choose_h))
+        type_choose_lay.addWidget(self.hour_combo, 4, 4, 1, 2)
+
         unzip_lable = QLabel('是否解压')
         unzip_lable.setFont(font)
         unzip_lable.setAlignment(Qt.AlignRight)
         unzip_lable.setMaximumSize(QSize(lable_size, lable_h))
-        type_choose_lay.addWidget(unzip_lable, 4, 0)
+        type_choose_lay.addWidget(unzip_lable, 5, 0)
 
         self.unzip_combo = QComboBox(self)
         self.unzip_combo.addItem('是')
         self.unzip_combo.addItem('否')
         self.unzip_combo.setFont(font)
         self.unzip_combo.setMinimumSize(QSize(choose_size, choose_h))
-        type_choose_lay.addWidget(self.unzip_combo, 4, 1, 1, 2)
+        type_choose_lay.addWidget(self.unzip_combo, 5, 1, 1, 2)
 
         pool_lable = QLabel('并行数量')
         pool_lable.setFont(font)
         pool_lable.setAlignment(Qt.AlignRight)
         pool_lable.setMaximumSize(QSize(lable_size, lable_h))
-        type_choose_lay.addWidget(pool_lable, 4, 3)
+        type_choose_lay.addWidget(pool_lable, 5, 3)
 
         self.pool_combo = QComboBox(self)
         for pool_num_counter in range(1, 13):
             self.pool_combo.addItem(str(pool_num_counter))
         self.pool_combo.setFont(font)
+        self.pool_combo.setCurrentIndex(4)
         self.pool_combo.setMinimumSize(QSize(choose_size, choose_h))
-        type_choose_lay.addWidget(self.pool_combo, 4, 4, 1, 2)
+        type_choose_lay.addWidget(self.pool_combo, 5, 4, 1, 2)
 
         site_dir_lable = QLabel('站点文件')
         site_dir_lable.setFont(font)
         site_dir_lable.setAlignment(Qt.AlignRight)
         site_dir_lable.setMaximumSize(QSize(lable_size, lable_h))
-        type_choose_lay.addWidget(site_dir_lable, 5, 0)
+        type_choose_lay.addWidget(site_dir_lable, 6, 0)
 
         self.site_file_line = QLineEdit(self)
         self.site_file_line.setFont(font)
-        self.site_file_line.setPlaceholderText("直接输入站点名(空格隔开),或按右侧按钮选择站点文件")
+        self.site_file_line.setPlaceholderText("按右侧按钮选择站点文件")
         self.site_file_line.setMinimumSize(QSize(600, choose_h))
-        type_choose_lay.addWidget(self.site_file_line, 5, 1, 1, 4)
+        type_choose_lay.addWidget(self.site_file_line, 6, 1, 1, 4)
 
         open_site_file_btn = QPushButton('  ...  ', self)
         open_site_file_btn.setFont(font)
         open_site_file_btn.setMinimumSize(QSize(80, choose_h + 15))
-        type_choose_lay.addWidget(open_site_file_btn, 5, 5, alignment=Qt.AlignRight)
+        type_choose_lay.addWidget(open_site_file_btn, 6, 5, alignment=Qt.AlignRight)
         open_site_file_btn.clicked.connect(self.choose_site_file)
 
         dd_dir_lable = QLabel('下载位置')
         dd_dir_lable.setFont(font)
         dd_dir_lable.setAlignment(Qt.AlignRight)
         dd_dir_lable.setMaximumSize(QSize(lable_size, lable_h))
-        type_choose_lay.addWidget(dd_dir_lable, 6, 0)
+        type_choose_lay.addWidget(dd_dir_lable, 7, 0)
 
         self.out_dir_line = QLineEdit(self)
         self.out_dir_line.setFont(font)
         self.out_dir_line.setMinimumSize(QSize(600, choose_h))
-        self.out_dir_line.setPlaceholderText("按右侧按钮选择下载文件夹,若为空则下载至当前文件夹")
-        type_choose_lay.addWidget(self.out_dir_line, 6, 1, 1, 4)
+        self.out_dir_line.setPlaceholderText("按右侧按钮选择下载文件夹")
+        type_choose_lay.addWidget(self.out_dir_line, 7, 1, 1, 4)
 
         open_out_dir_btn = QPushButton('  ...  ', self)
         open_out_dir_btn.setFont(font)
         open_out_dir_btn.setMinimumSize(QSize(80, choose_h + 15))
-        type_choose_lay.addWidget(open_out_dir_btn, 6, 5, alignment=Qt.AlignRight)
+        type_choose_lay.addWidget(open_out_dir_btn, 7, 5, alignment=Qt.AlignRight)
         open_out_dir_btn.clicked.connect(self.choose_out_dir)
 
         none_lable = QLabel('')
-        type_choose_lay.addWidget(none_lable, 7, 0)
+        type_choose_lay.addWidget(none_lable, 8, 0)
 
         font_big = QtGui.QFont()
         font_big.setPointSize(10)
@@ -477,13 +506,13 @@ class mainWindow(QMainWindow):
         dd_btn.setFont(font_big)
         dd_btn.setMinimumSize(QSize(120, choose_h + 30))
         dd_btn.clicked.connect(self.dd)
-        type_choose_lay.addWidget(dd_btn, 8, 1, 1, 2, alignment=Qt.AlignCenter)
+        type_choose_lay.addWidget(dd_btn, 9, 1, 1, 2, alignment=Qt.AlignCenter)
 
         kill_btn = QPushButton('终 止', self)
         kill_btn.setFont(font_big)
         kill_btn.setMinimumSize(QSize(120, choose_h + 30))
         kill_btn.clicked.connect(self.kill_p)
-        type_choose_lay.addWidget(kill_btn, 8, 3, 1, 2, alignment=Qt.AlignCenter)
+        type_choose_lay.addWidget(kill_btn, 9, 3, 1, 2, alignment=Qt.AlignCenter)
 
         RightTop = QFrame()
         RightTop.setFrameShape(QFrame.StyledPanel)
@@ -507,7 +536,7 @@ class mainWindow(QMainWindow):
         splitterAll = QSplitter(Qt.Horizontal)
         splitterAll.addWidget(splitterLeft)
         splitterAll.addWidget(splitterRight)
-        splitterAll.setSizes([200, 400])
+        splitterAll.setSizes([200, 300])
         # 声明布局
         layout = QHBoxLayout(self)
         layout.addWidget(splitterAll)
@@ -595,7 +624,7 @@ class mainWindow(QMainWindow):
         self.printLog('是否解压 -> ' + unzip_str)
 
         cmd += ' -t ' + type_name
-        if type_name in yd_type or type_name in yds_type or type_name in ym_type:
+        if type_name in yd_type or type_name in yds_type or type_name in ym_type or type_name in ydsh_type or type_name in ydh_type:
             year = self.year_line.text()
             if year == '':
                 self.printLog('请输入年份！')
@@ -606,7 +635,7 @@ class mainWindow(QMainWindow):
             self.printLog('下载年份 -> ' + year)
             cmd += ' -y ' + year
 
-        if type_name in yd_type or type_name in yds_type:
+        if type_name in yd_type or type_name in yds_type or type_name in ydsh_type or type_name in ydh_type:
             doy1 = self.begin_doy_line.text()
             doy2 = self.end_doy_line.text()
             if doy1 == '':
@@ -621,25 +650,22 @@ class mainWindow(QMainWindow):
                 self.printLog('请输入正确年积日！')
                 return
             self.printLog('起始年积日 -> ' + doy1)
-            cmd += ' -o ' + doy1
-            self.printLog('中止年积日 -> ' + doy2)
+            cmd += ' -s ' + doy1
+            self.printLog('终止年积日 -> ' + doy2)
             cmd += ' -e ' + doy2
 
         if type_name in yds_type or type_name in s_type:
             site_file = self.site_file_line.text()
-            if site_file == '':
-                self.printLog('请输入站点位置文件！')
+            site_name = self.site_name_line.text()
+            if site_file == '' and site_name == '':
+                self.printLog('请输入站点位置文件或站点名称！')
                 return
-            if site_file != '' and not os.path.isfile(site_file):
-                site_temp = "./win_bin/site_temp"
-                site_temp_open = open(site_temp, 'w+')
-                site_list = site_file.split()
-                for site in site_list:
-                    site_temp_open.write(site + ' ')
-                site_temp_open.close()
-                site_file = site_temp
-            self.printLog('站点文件 -> ' + site_file)
-            cmd += ' -f ' + site_file
+            if os.path.isfile(site_file) and site_file != '':
+                self.printLog('站点文件 -> ' + site_file)
+                cmd += ' -f ' + site_file
+            else:
+                site_name = str(site_name).replace(' ', ',')
+                cmd += ' -site ' + site_name
 
         if type_name in ym_type:
             month = self.month_line.text()
@@ -655,6 +681,10 @@ class mainWindow(QMainWindow):
             self.printLog('下载数据类型 -> ' + type_name)
             self.printLog('下载月份 -> ' + month)
             cmd += ' -m ' + month
+        if type_name in ydsh_type or type_name in ydh_type:
+            hour = self.hour_combo.currentText()
+            self.printLog('下载小时 -> ' + hour)
+            cmd += ' -hour ' + hour
 
         loc = self.out_dir_line.text()
         if loc != '' and not os.path.isdir(loc):
@@ -809,7 +839,10 @@ def ytAppMain():
     win = mainWindow()
     framelessWnd.setContent(win)
     framelessWnd.show()
-    win.printLog('欢迎使用FAST-大地测量数据下载软件!')
+    # win.printLog('欢迎使用FAST-大地测量数据下载软件!')
+    win.printLog('FAST软件版本: V' + str(version[-1]) + ' 发布日期: ' + version_time[-1])
+    win.printLog('Git: https://github.com/ChangChuntao/FAST')
+    win.printLog('Git: https://gitee.com/changchuntao/FAST')
     sys.exit(ytApp.exec())
 
 

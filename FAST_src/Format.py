@@ -17,6 +17,7 @@ from FAST_Print import PrintGDD
 from Get_Ftp import ReplaceTimeWildcard
 from GNSS_Timestran import gnssTime2datetime, datetime2GnssTime
 from pubFuncs import mkdir, EmptyFolder
+import pubFuncs
 
 
 def isinpath(file):  # 判断相关文件是否存在
@@ -31,6 +32,9 @@ def isinpath(file):  # 判断相关文件是否存在
                     by Chang Chuntao    -> Version : 2.06
     2023-03-17 :    > 重写本地文件判定
                     by Chang Chuntao    -> Version : 2.08
+    2023-06-30 :    + 增加高采样率文件判断
+                    + 增加igu文件的判断
+                    by Chang Chuntao    -> Version : 2.09
     """
     orifile = str(file).split(".")[0]
     ionfile = file
@@ -40,6 +44,8 @@ def isinpath(file):  # 判断相关文件是否存在
     filelowp = file
     filelown = file
     fileprolow = file
+    rtrFile = file
+    rtsFile = file
     projectFileUpper = file
     if len(orifile) > 9:
         ionfile = file.lower()[0:4] + 'g' + file.lower()[16:20] + "." + file.lower()[14:16] + "i"
@@ -92,11 +98,23 @@ def isinpath(file):  # 判断相关文件是否存在
         elif 'CH-OG-1-SST' in file:
             projectFileLow = str(file).replace('.zip', '') + '.rnx'
             filelowo = orifile[:27] + '.rnx'
+        elif 'igu' in file and 'sp3' in file:
+            gpsw = file[3:7]
+            gpsd = file[7]
+            hour = file[9:11]
+            specTime = gnssTime2datetime(gpsw + " " + gpsd, "GPSWeekDay")
+            projectFileUpper = 'IGS0OPSULT_<YYYY><DOY><nowHour>00_02D_15M_ORB.SP3'
+            projectFileUpper = ReplaceTimeWildcard(projectFileUpper, specTime)
+            projectFileUpper = str(projectFileUpper).replace('<nowHour>', hour)
         else:
             filelowo = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "o"
             filelowd = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "d"
             filelowp = file.lower()[0:4] + file.lower()[16:20] + "." + file.lower()[14:16] + "p"
             fileprolow = file.lower()[0:4] + file.lower()[16:20] + ".bia"
+            rtrFile = str(rtrFile).replace('_S_', '_R_')
+            rtrFile = str(rtrFile).replace('_R_', '_R_')
+            rtsFile = str(rtsFile).replace('_R_', '_S_')
+            rtsFile = str(rtsFile).replace('_S_', '_S_')
     else:
         if 'igs' in file and '.sp3' in file:
             gpsw = file[3:7]
@@ -168,6 +186,7 @@ def isinpath(file):  # 判断相关文件是否存在
             or os.path.exists(fileUnzip) or os.path.exists(projectFileUpperGz) or os.path.exists(projectFileUpperZ) \
             or os.path.exists(projectFileUpper) or os.path.exists(filelowoZ) or os.path.exists(filelowogz)\
             or os.path.exists(filelowdZ) or os.path.exists(filelowdgz) or os.path.exists(filelowpZ) \
+            or os.path.exists(rtrFile) or os.path.exists(rtsFile) \
             or os.path.exists(filelowpgz) or os.path.exists(filelownZ) or os.path.exists(filelowngz):
         return True
     else:
@@ -209,7 +228,7 @@ else:
         dirname = os.path.dirname(os.path.abspath(__file__))
     crx2rnx = os.path.join(dirname, 'bin', 'crx2rnx')
     crx2rnx += ' '
-    unzip_tgz = 'tar -xvzf'
+    unzip_tgz = 'tar -xvzf '
     uncompress = os.path.join(dirname, 'bin', 'uncompress')
     unzip_zip = os.path.join(dirname, 'bin', 'unzip') + ' '
     unzip = uncompress + ' '
@@ -271,24 +290,12 @@ def uncompresss(file):
             if PID == 0:
                 break
         if completely:
-            PrintGDD('压缩文件完好 -> ' + file + ', 已成功解压！', 'warning')
+            # PrintGDD('压缩文件完好 -> ' + file + ', 已成功解压！', 'warning')
             if os.path.exists(file):
                 os.remove(file)
             if file.split(".")[-1] == "tgz":
                 if os.path.isfile(file):
                     os.remove(file)
-            # if 'EPH_M' in file:
-            #     if not os.path.isfile(file[:-7] + 'sp3'):
-            #         os.rename(file[:-2], file[:-7] + 'sp3')
-            #         PrintGDD("更名：" + file[:-7] + 'sp3', "normal")
-            # if 'CLK_M' in file:
-            #     if not os.path.isfile(file[:-7] + 'clk'):
-            #         os.rename(file[:-2], file[:-7] + 'clk')
-            #         PrintGDD("更名：" + file[:-7] + 'clk', "normal")
-            # if 'BIA_M' in file:
-            #     if not os.path.isfile(file[:-7] + 'bia'):
-            #         os.rename(file[:-2], file[:-7] + 'bia')
-            #         PrintGDD("更名：" + file[:-7] + 'bia', "normal")
         else:
             PrintGDD('压缩文件破损 -> ' + file + ', 未成功解压！', 'warning')
 
@@ -298,8 +305,10 @@ def crx2rnxs(file):
     2022-03-27 : crx2rnx by Chang Chuntao -> Version : 1.00
     """
     if file[-3:-1].isdigit() and file[-1] == "d":
-        cmd = crx2rnx + file
-        os.system(cmd)
+        ofile = file[:-1] + 'o'
+        if not os.path.isfile(ofile):
+            cmd = crx2rnx + file
+            os.system(cmd)
 
 
 def crx2d(file):
@@ -311,6 +320,7 @@ def crx2d(file):
         if not os.path.isfile(filelow):
             os.rename(file, filelow)
             PrintGDD("更名：" + filelow, "normal")
+    return filelow
 
 
 def renamebrdm(file):
@@ -401,31 +411,32 @@ def unzipfile_highrate_rinex2(path, ftpsite):
         if zipfilename in all_zip_file:
             continue
         all_zip_file.append(zipfilename)
-        site_dir = os.path.join(nowdir, zipfilename.split('.')[0])
-        merge_file = os.path.join(nowdir, zipfilename.split('.tar')[0][:-1]) + 'o'
-        mkdir(site_dir, isdel=True)
-        shutil.copy2(zipfilename, site_dir)
-        os.chdir(site_dir)
-        tar_cmd = tar + zipfilename
-        os.system(tar_cmd)
-        now_gfz_cmd = gfzrnx + '-finp '
-        for root, dirs, files in os.walk(site_dir):
-            for filename in files:
-                if '.gz' not in filename:
-                    continue
-                now_gz_file = os.path.join(root, filename)
-                now_crx_file = os.path.join(root, filename.split('.gz')[0])
-                now_rnx_file = filename.split('.gz')[0][:-1] + 'o'
 
-                now_zip_cmd = unzip + now_gz_file
-                os.system(now_zip_cmd)
-
-                now_crx2rnx_cmd = crx2rnx + now_crx_file
-                os.system(now_crx2rnx_cmd)
-
-                now_gfz_cmd += now_rnx_file + ' '
-        now_gfz_cmd += '-fout ' + merge_file
-        os.system(now_gfz_cmd)
+        # site_dir = os.path.join(nowdir, zipfilename.split('.')[0])
+        # merge_file = os.path.join(nowdir, zipfilename.split('.tar')[0][:-1]) + 'o'
+        # mkdir(site_dir, isdel=True)
+        # shutil.copy2(zipfilename, site_dir)
+        # os.chdir(site_dir)
+        # tar_cmd = tar + zipfilename
+        # os.system(tar_cmd)
+        # now_gfz_cmd = gfzrnx + '-finp '
+        # for root, dirs, files in os.walk(site_dir):
+        #     for filename in files:
+        #         if '.gz' not in filename:
+        #             continue
+        #         now_gz_file = os.path.join(root, filename)
+        #         now_crx_file = os.path.join(root, filename.split('.gz')[0])
+        #         now_rnx_file = filename.split('.gz')[0][:-1] + 'o'
+        #
+        #         now_zip_cmd = unzip + now_gz_file
+        #         os.system(now_zip_cmd)
+        #
+        #         now_crx2rnx_cmd = crx2rnx + now_crx_file
+        #         os.system(now_crx2rnx_cmd)
+        #
+        #         now_gfz_cmd += now_rnx_file + ' '
+        # now_gfz_cmd += '-fout ' + merge_file
+        # os.system(now_gfz_cmd)
     os.chdir(nowdir)
 
 
@@ -434,68 +445,52 @@ def unzipfile_highrate_rinex3(path, ftpsite):
     2022.11.15 :    通过下载列表解压高采样率文件并转换合并
                     by Chang Chuntao -> Version : 2.03
     """
+    from GNSS_Timestran import doy2datetime, datetime2doy
     nowdir = os.getcwd()
     if len(path) == 0:
         path = os.getcwd()
     os.chdir(path)
     PrintGDD("开始解压文件!", "normal")
-    all_zip_file = []
+    siteList = {}
     for ftp in ftpsite:
-        zipfilename = str(ftp).split("/")[-1]
+        zipfilename = os.path.basename(ftp)
+        siteName = zipfilename[:9]
         if not os.path.exists(zipfilename):
             continue
-        if zipfilename in all_zip_file:
-            continue
-        all_zip_file.append(zipfilename)
-        site_dir = os.path.join(nowdir, zipfilename.split('.')[0])
-
-        merge_file = os.path.join(nowdir,
-                                  zipfilename.lower()[0:4] + zipfilename.lower()[16:20] + "." + zipfilename.lower()[
-                                                                                                14:16] + "o")
-        if os.path.exists(merge_file):
-            continue
-        mkdir(site_dir, isdel=True)
-        shutil.copy2(zipfilename, site_dir)
-        os.chdir(site_dir)
-        tar_cmd = tar + zipfilename
-        os.system(tar_cmd)
-        now_gfz_cmd = gfzrnx + '-finp '
-
-        for root, dirs, files in os.walk(site_dir):
-            for filename in files:
-                if '.gz' not in filename:
-                    continue
-                now_gz_file = os.path.join(root, filename)
-
-                now_zip_cmd = unzip + now_gz_file
-                os.system(now_zip_cmd)
-
-                long_crx_file = os.path.join(root, filename.split('.gz')[0])
-                now_crx_file = os.path.join(root,
-                                            filename.lower()[0:4] + filename.lower()[16:20] + filename[19:23] + "." +
-                                            filename.lower()[14:16] + "d")
-                if not os.path.exists(long_crx_file):
-                    continue
-                if not os.path.isfile(now_crx_file):
-                    os.rename(long_crx_file, now_crx_file)
-                PrintGDD("更名：" + now_crx_file, "normal")
-                now_rnx_file = os.path.join(root,
-                                            filename.lower()[0:4] + filename.lower()[16:20] + filename[19:23] + "." +
-                                            filename.lower()[14:16] + "o")
-
-                move_rnx_file = filename.lower()[0:4] + filename.lower()[16:20] + filename[
-                                                                                  19:23] + "." + filename.lower()[
-                                                                                                 14:16] + "o"
-
-                now_crx2rnx_cmd = crx2rnx + now_crx_file
-                os.system(now_crx2rnx_cmd)
-                shutil.copy2(now_rnx_file, site_dir)
-
-                now_gfz_cmd += move_rnx_file + ' '
-        now_gfz_cmd += ' -satsys GCE -fout ' + merge_file
-
-        # print(now_gfz_cmd)
-        os.system(now_gfz_cmd)
-        EmptyFolder(site_dir)
-        # os.rmdir(site_dir)
+        if siteName not in siteList:
+            siteList[siteName] = {}
+        siteYear = int(zipfilename[12:16])
+        siteDoy = int(zipfilename[16:19])
+        siteTime = doy2datetime(siteYear, siteDoy)
+        if siteTime not in siteList[siteName]:
+            siteList[siteName][siteTime] = []
+        if zipfilename not in siteList[siteName][siteTime]:
+            siteList[siteName][siteTime].append(zipfilename)
+    for siteName in siteList:
+        sitePath = os.path.join(path, siteName)
+        mkdir(sitePath)
+        for siteTime in siteList[siteName]:
+            nowYear, nowDoy = datetime2doy(siteTime)
+            siteTimePath = os.path.join(sitePath, str(nowYear) + '%03d' % nowDoy)
+            mkdir(siteTimePath)
+            merge_file = os.path.join(nowdir, siteList[siteName][siteTime][0].lower()[0:4] +
+                                      siteList[siteName][siteTime][0].lower()[16:20] + "." +
+                                      siteList[siteName][siteTime][0].lower()[14:16] + "o")
+            now_gfz_cmd = gfzrnx + '-finp '
+            for siteFileZ in siteList[siteName][siteTime]:
+                siteFile = str(siteFileZ).replace('.gz', '')
+                uncompresss(siteFileZ)
+                siteFileInTimePath = os.path.join(siteTimePath, siteFile)
+                pubFuncs.moveFile(siteFile, siteTimePath)
+                dfile = siteFile.lower()[0:4] + siteFile.lower()[16:20] + siteFile[19:23] + "." + siteFile.lower()[14:16] + "d"
+                ofile = siteFile.lower()[0:4] + siteFile.lower()[16:20] + siteFile[19:23] + "." + siteFile.lower()[14:16] + "o"
+                dfileInPath = os.path.join(siteTimePath, dfile)
+                ofileInPath = os.path.join(siteTimePath, ofile)
+                pubFuncs.moveFile(siteFileInTimePath, dfileInPath)
+                crx2rnxs(dfileInPath)
+                os.remove(dfileInPath)
+                now_gfz_cmd += ofileInPath + ' '
+            now_gfz_cmd += ' -satsys GCRE -fout ' + merge_file
+            os.system(now_gfz_cmd)
+            EmptyFolder(siteTimePath)
         os.chdir(nowdir)

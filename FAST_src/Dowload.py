@@ -122,7 +122,6 @@ def argpooldownload(urllist, process, loc, compress, data_type):
         pool.close()
         pool.join()
     if compress == "Y" or compress == "y":
-        # unzip_format(loc)
         uncompress_arg(loc, urllist, data_type)
     end_time = timeit.default_timer() - start_time
     PrintGDD("全部下载结束!", "important")

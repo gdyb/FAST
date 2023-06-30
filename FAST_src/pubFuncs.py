@@ -6,21 +6,18 @@ def mkdir(path, isdel=False):
     # Creating a folder
     # If the folder exists and isdel is true, the folder is emptied
     import os
-    import shutil
     path = path.strip()
     path = path.rstrip('\\')
     if path == '':
         path = '..'
     isExists = os.path.exists(path)
     if not isExists:
-        PrintGDD(path + ' created successfully', 'normal')
+        print(path + ' created successfully')
         os.makedirs(path)
         return True
     else:
-        if isdel:
-            shutil.rmtree(path)
-        os.makedirs(path)
-        PrintGDD(path + ' created successfully', 'normal')
+        if isdel: EmptyFolder(path)
+        print(path + ' created successfully')
         return False
 
 
@@ -91,14 +88,17 @@ def moveFile(ori_file, target):
     import os
     import shutil
     if not os.path.isfile(ori_file):
-        raise IOError(ori_file + ' is not file!')
+        print(ori_file + ' is not file!')
     if os.path.isdir(target):
-        shutil.move(ori_file, target)
-    if os.path.isfile(target):
-        os.remove(target)
-        shutil.move(ori_file, target)
+        try:
+            shutil.move(ori_file, target)
+        except:
+            pass
     else:
-        shutil.move(ori_file, target)
+        try:
+            shutil.move(ori_file, target)
+        except:
+            pass
 
 
 def is_number(s):

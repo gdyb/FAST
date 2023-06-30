@@ -11,7 +11,7 @@ from FAST_Print import PrintGDD
 from GNSS_TYPE import gnss_type
 
 version = [1.00, 1.10, 1.11, 1.12, 1.13, 1.14, 1.15, 1.16, 1.17, 1.18, 1.19, 1.20, 1.21, 1.22, 1.23, 1.24, 1.25,
-           2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08]
+           2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09]
 
 version_time = ['2022-03-27',
                 '2022-04-12',
@@ -37,7 +37,8 @@ version_time = ['2022-03-27',
                 '2022-12-04',
                 '2023-01-14',
                 '2023-02-10',
-                '2023-03-17']
+                '2023-03-17',
+                '2023-06-30']
 
 
 def Supported_Data():
@@ -111,8 +112,10 @@ def Supported_Data():
 
 def cddhelp():
     """
-    2022-03-27 :    引导模式输出帮助  by Chang Chuntao -> Version : 1.00
-    2022-04-12 :    Version update by Chang Chuntao -> Version : 1.10
+    2022-03-27 :    引导模式输出帮助
+                    by Chang Chuntao -> Version : 1.00
+    2022-04-12 :    Version update
+                    by Chang Chuntao -> Version : 1.10
     """
     print("==================================================================================")
     print("")
@@ -149,33 +152,41 @@ def arg_help():
 
 def arg_options():
     """
-    2022-03-27 : 参数输入模式输出帮助，参数类型帮助 by Chang Chuntao -> Version : 1.00
+    2022-03-27 :    参数输入模式输出帮助，参数类型帮助
+                    by Chang Chuntao -> Version : 1.00
+    2023-06-29 :    + "-i", "-site", 输入站点
+                    + "-h", "-hour", 输入小时
+                    by Chang Chuntao -> Version : 2.09
     """
     print("  Usage: FAST <options>")
     print("")
     print("  Where the following are some of the options avaiable:")
     print("")
-    print("  -v,  --version                   display the version of FAST and exit")
-    print("  -h,  --help                      print this help")
-    print('  -t,  --type                      GNSS type, if you need to download multiple data,')
-    print('                                   Please separate characters with " , "')
-    print("                                   Example : GPS_brdc,GPS_IGS_sp3,GPS_IGR_clk")
-    print("  -l,  --loc                       which folder is the download in")
-    print("  -y,  --year                      where year are the data to be download")
-    print("  -d,  --day                       where day are the data to be download")
-    print("  -o,  --day1                      where first day are the data to be download")
-    print("  -e,  --day2                      where last day are the data to be download")
-    print("  -m,  --month                     where month are the data to be download")
-    print("  -u,  --uncomprss Y/N             Y - unzip file (default)")
-    print("                                   N - do not unzip files")
-    print("  -f,  --file                      site file directory,The site names in the file are separated by spaces.")
-    print("                                   Example : bjfs irkj urum ")
-    print("  -p   --process                   number of threads (default 12)")
+    print("  -v,  -version                   display the version of FAST and exit")
+    print("  -h,  -help                      print this help")
+    print('  -t,  -type                      GNSS type, if you need to download multiple data,')
+    print('                                  Please separate characters with " , "')
+    print("                                  Example : GPS_brdc,GPS_IGS_sp3,GPS_IGR_clk")
+    print("  -l,  -loc                       which folder is the download in [Default pwd]")
+    print("  -y,  -year                      where year are the data to be download")
+    print("  -d,  -day                       where day   is the   day  to be download")
+    print("  -s,  -day1                      where day1  is start day  to be download")
+    print("  -e,  -day2                      where day2  is end   day  to be download")
+    print("  -hour                           where hour to be download [Default <0 - 23>]")
+    print("  -m,  -month                     where month to be download")
+    print("  -u,  -uncomprss                 Y - unzip file [Default Y]")
+    print("                                  N - do not unzip files")
+    print("  -f,  -file                      site file directory,The sites in the file are separated by spaces.")
+    print("                                  Example : bjfs irkj urum ")
+    print("  -i,  -site                      where sites to be download,The site names are separated by comma.")
+    print("                                  Example : bjfs,irkj,urum")
+    print("  -p   -process                   number of threads [Default 12]")
     print("")
     print(r"  Example: FAST -t Panda_svnav")
-    print(r"           FAST -t GPS_brdc,GPS_IGS_sp3,GPS_IGR_clk -y 2022 -o 22 -e 30 -p 30")
+    print(r"           FAST -t GPS_brdc,GPS_IGS_sp3,GPS_IGR_clk -y 2022 -s 22 -e 30 -p 30")
     print(r"           FAST -t MGEX_WHU_F_sp3 -y 2022 -d 22 -u N -l D:\code\CDD\Example")
     print(r"           FAST -t MGEX_IGS_rnx -y 2022 -d 22 -f D:\code\cdd\mgex.txt")
+    print(r"           FAST -t MGEX_IGS_rnx -y 2022 -d 22 -i bjfs,abpo")
     print(r"           FAST -t IVS_week_snx -y 2022 -m 1")
     print("")
     PrintGDD("是否查看支持的数据类型？(y)", "input")
@@ -194,5 +205,6 @@ def fastSoftwareInformation():
     print("     Copyright(C)   : The GNSS Center, Wuhan University & ")
     print("                      Chinese Academy of Surveying and mapping")
     print("     Contact        : QQ@1252443496 & WECHAT@amst-jazz GITHUB@ChangChuntao")
-    print("     Git            : https://github.com/ChangChuntao/FAST.git")
+    print("     Git            : https://github.com/ChangChuntao/FAST")
+    print("                      https://gitee.com/changchuntao/FAST")
     print("     Version        : " + version_time[-1] + " # " + '%.2f' % version[-1])

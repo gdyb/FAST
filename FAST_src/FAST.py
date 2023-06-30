@@ -157,6 +157,16 @@ def FAST():
                     + 增加zip解压
                     > GFZ多系统数据地址更新(IGS20) -> MGEX_GFZ_R_sp3 / MGEX_GFZ_F_clk / GFZ_R_erp / MGEX_GFZ_R_bia
                     by Chang Chuntao  # 2023-03-17
+
+    Version 2.09    + Ultra Product add <HOUR> flag / input
+                    + ARG MODE "-i", "-site", 输入站点
+                    + ARG MODE "-h", "-hour", 输入小时
+                    > GPS_COD_bia -> GPS_COD_F_osb / MGEX_COD_F_bia -> MGEX_COD_F_osb / MGEX_COD_R_bia -> GRE_COD_R_osb
+                    > MGEX_WHU_R_OSB_bia -> MGEX_WHU_R_osb / MGEX_WHU_R_ABS_bia -> MGEX_WHU_R_abs
+                    > MGEX_GFZ_R_bia -> MGEX_GFZ_R_osb
+                    > MGEX_GFZ_F_clk -> GRE_GFZ_F_clk
+                    x COD_F_ion, 与CODG_ion重复
+                    by Chang Chuntao  # 2023-06-30
     """
     import sys
     from ARG_Mode import ARG_Mode
@@ -176,7 +186,7 @@ def FAST():
                 break
     else:
         # ARG MODE 带参数运行
-        ARG_Mode(argument)  # ARG MODE 主函数
+        ARG_Mode()  # ARG MODE 主函数
 
 
 if __name__ == '__main__':
