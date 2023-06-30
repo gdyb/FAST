@@ -161,10 +161,10 @@ def FAST():
     Version 2.09    + Ultra Product add <HOUR> flag / input
                     + ARG MODE "-i", "-site", 输入站点
                     + ARG MODE "-h", "-hour", 输入小时
+                    + MGEX_WHU_F_osb / MGEX_WHU_R_obx
                     > GPS_COD_bia -> GPS_COD_F_osb / MGEX_COD_F_bia -> MGEX_COD_F_osb / MGEX_COD_R_bia -> GRE_COD_R_osb
                     > MGEX_WHU_R_OSB_bia -> MGEX_WHU_R_osb / MGEX_WHU_R_ABS_bia -> MGEX_WHU_R_abs
-                    > MGEX_GFZ_R_bia -> MGEX_GFZ_R_osb
-                    > MGEX_GFZ_F_clk -> GRE_GFZ_F_clk
+                    > MGEX_GFZ_R_bia -> MGEX_GFZ_R_osb / MGEX_GFZ_F_clk -> GRE_GFZ_F_clk
                     x COD_F_ion, 与CODG_ion重复
                     by Chang Chuntao  # 2023-06-30
     """

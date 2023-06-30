@@ -109,14 +109,14 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
              ["SP3", ["GPS_IGS_sp3", "GPS_IGR_sp3", "GPS_IGU_sp3", "GPS_GRG_sp3",  # 2 SP3
 
                       "MGEX_WHU_F_sp3", "MGEX_WHU_R_sp3", "MGEX_WHU_U_sp3",
-                      "MGEX_WHU_Hour_sp3", "MGEX_SHA_F_sp3", "MGEX_COD_F_sp3",
+                      "MGEX_WHU_H_sp3", "MGEX_SHA_F_sp3", "MGEX_COD_F_sp3",
                       "MGEX_GRG_F_sp3", 'MGEX_GFZ_R_sp3', "GRE_GFZ_F_sp3",
                       'GRE_COD_R_sp3', 'GLO_IGL_F_sp3']],
 
              ["CLK", ["GPS_IGS_clk", "GPS_IGR_clk", "GPS_GRG_clk", "GPS_IGS_clk_30s",  # 3 CLK
 
                       "MGEX_WHU_F_clk", "MGEX_WHU_R_clk", "MGEX_WHU_U_clk",
-                      "MGEX_WHU_Hour_clk", "MGEX_SHA_F_clk", 'MGEX_COD_F_clk',
+                      "MGEX_WHU_H_clk", "MGEX_SHA_F_clk", 'MGEX_COD_F_clk',
                       "MGEX_GRG_F_clk", 'MGEX_GFZ_R_clk', 'GRE_GFZ_F_clk',
                       'GRE_COD_R_clk', 'GLO_IGL_F_clk',
                       'GRE_COD_F_clk_30s']],
@@ -124,9 +124,9 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
              ["RINEX", ["GPS_IGS_rnx", "GPS_USA_cors", "GPS_HK_cors", "GPS_AU_cors",  # 4 RINEX
                         "MGEX_IGS_rnx", "MGEX_HK_cors", "GRE_IGS_01S", "GCRE_MGEX_01S", "MGEX_EU_cors"]],
 
-             ["ERP", ["IGS_erp", "IGR_erp", "WHU_F_erp",
+             ["ERP", ["IGS_F_erp", "IGS_R_erp", "WHU_F_erp",
                       "COD_F_erp", "WHU_U_erp", "GFZ_R_erp",
-                      'COD_R_erp', "WHU_Hour_erp"]],  # 5 ERP
+                      'COD_R_erp', "WHU_H_erp"]],  # 5 ERP
 
              ["BIA_DCB_OBX", ["GPS_COD_F_osb",  "GE_GRG_F_osb", "GRE_COD_R_osb",
                               'MGEX_WHU_F_osb', "MGEX_WHU_R_osb", "MGEX_WHU_R_abs",
@@ -135,9 +135,9 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
                               "GPS_COD_dcb", "MGEX_CAS_R_dcb",
                               "P1C1", "P1P2", "P2C2",
 
-                              "GPS_COD_obx", "GPS_GRG_obx",
-                              "MGEX_WHU_F_obx", "MGEX_COD_F_obx", "MGEX_GFZ_R_obx",
-                              'MGEX_WHU_U_obx']],
+                              "GPS_COD_F_obx", "GPS_GRG_F_obx",
+                              "MGEX_WHU_F_obx", 'MGEX_WHU_R_obx', 'MGEX_WHU_U_obx',
+                              "MGEX_COD_F_obx", "MGEX_GFZ_R_obx"]],
 
              ["ION_TRO", ["IGSG_ion", "IGRG_ion", "WHUG_ion",
                           "WURG_ion", "CODG_ion", "CORG_ion",
