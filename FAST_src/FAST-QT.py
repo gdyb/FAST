@@ -418,7 +418,7 @@ class mainWindow(QMainWindow):
         self.site_name_line.setMinimumSize(QSize(lable_size, choose_h))
         type_choose_lay.addWidget(self.site_name_line, 4, 1, 1, 2)
 
-        hour_lable = QLabel('下载小时')
+        hour_lable = QLabel('小时选择')
         hour_lable.setFont(font)
         hour_lable.setAlignment(Qt.AlignRight)
         hour_lable.setMaximumSize(QSize(lable_size, lable_h))

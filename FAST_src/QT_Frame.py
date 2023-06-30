@@ -75,8 +75,7 @@ class FramelessWindow(QWidget):
         # 为了在Windows系统下正确处理最小化函数，需要加上最小化标志按钮
         if platform.system() == 'Windows':
             self.setWindowFlags(self.windowFlags() | Qt.WindowMinimizeButtonHint)
-        whu_png = os.path.join(dirname, 'win_bin', 'WHU.png')
-        self.setWindowIcon(QtGui.QIcon(whu_png))
+
         self.setAttribute(Qt.WA_NoSystemBackground, True)
         self.setAttribute(Qt.WA_TranslucentBackground)
 

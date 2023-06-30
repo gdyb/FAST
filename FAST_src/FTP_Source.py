@@ -123,8 +123,6 @@ for p in plate:
                     + MGEX_WHU_F_osb
                     > GRE_IGS_01S GCRE_MGEX_01S change source
                     > MGEX_WHU_U_clk rename source : WUM0MGXULT_ -> WUM0MGXULA_
-                    + ftp://igs.gnsswhu.cn/pub/whu/phasebias/2020/orbit/WUM0MGXRAP_20200010000_01D_30S_ATT.OBX.gz
-                    + ftp://igs.gnsswhu.cn/pub/whu/phasebias/2020/orbit/WUM0MGXRAP_20200010000_01D_30S_ATT.OBX.gz
                     > GPS_COD_bia -> GPS_COD_F_osb / MGEX_COD_F_bia -> MGEX_COD_F_osb / MGEX_COD_R_bia -> GRE_COD_R_osb
                     > MGEX_WHU_R_OSB_bia -> MGEX_WHU_R_osb / MGEX_WHU_R_ABS_bia -> MGEX_WHU_R_abs
                     > MGEX_GFZ_R_bia -> MGEX_GFZ_R_osb / ...
@@ -487,7 +485,7 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
              'ftp://igs.gnsswhu.cn/pub/gnss/products/mgex/<GPSW>/WUM0MGXFIN_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz'],
 
          "MGEX_WHU_R_obx": [
-             'ftp://igs.gnsswhu.cn/pub/whu/phasebias/<GPSW>/orbit/WUM0MGXRAP_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz'],
+             'ftp://igs.gnsswhu.cn/pub/whu/phasebias/<YEAR>/orbit/WUM0MGXRAP_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz'],
 
          "MGEX_GFZ_R_obx": [
              'ftp://igs.gnsswhu.cn/pub/gps/products/mgex/<GPSW>/GFZ0MGXRAP_<YYYY><DOY>0000_01D_30S_ATT.OBX.gz',
