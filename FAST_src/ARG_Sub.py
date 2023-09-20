@@ -27,6 +27,8 @@ def GET_ARG(cddarg):
                     by Chang Chuntao -> Version : 2.09
     """
     args = sys.argv
+    if 'from multiprocessing.resource_tracker import main;main(6)' in args:
+        return None
     for argIndex in range(len(args)):
         nowArg = args[argIndex]
         if '-h' == nowArg:
@@ -46,6 +48,8 @@ def GET_ARG(cddarg):
             cddarg["day1"] = int(args[argIndex + 1])
             cddarg["day2"] = int(args[argIndex + 1])
         elif nowArg in ["-s", "-day1", "-start"]:
+            if args[argIndex + 1] == '-c':
+                continue
             cddarg["day1"] = int(args[argIndex + 1])
         elif nowArg in ["-e", "-day2", "-end"]:
             cddarg["day2"] = int(args[argIndex + 1])
@@ -92,6 +96,8 @@ def ARG_ifwrong(cddarg):  # 判断输入参数正确性
                     if cddarg['file'] == "" and cddarg['site'] == "":
                         PrintGDD("本类型需要输入文件位置参数或站点参数，请指定[-f <file>]或者[-i <site>]！", "fail")
                         sys.exit(2)
+        elif dt =='':
+            sys.exit()
         else:
             PrintGDD(dt + "数据类型不存在！", "fail")
             PrintGDD("是否需要查看支持数据？(y)", "input")

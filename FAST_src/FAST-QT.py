@@ -3,9 +3,10 @@ import subprocess
 import sys
 import time
 from os.path import expanduser
+import platform
 import psutil
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QGridLayout, QComboBox, QFileDialog, QTextEdit, QProgressBar, QMessageBox, QStyle
+from PyQt5.QtWidgets import QGridLayout, QComboBox, QFileDialog, QTextEdit, QDesktopWidget, QMessageBox, QStyle
 import GNSS_Timestran
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt, QDateTime, QSize, pyqtSlot, QProcess, QThread, pyqtSignal, QObject
@@ -16,7 +17,8 @@ from QT_Frame import FramelessWindow
 from GNSS_TYPE import gnss_type, yd_type, ym_type, no_type, yds_type, s_type, ydsh_type, ydh_type
 import qdarkstyle
 
-version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09, 2.10, 2.11]
+
+version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09, 2.10]
 version_time = ['2022-11-08',
                 '2022-11-09',
                 '2022-11-10',
@@ -27,14 +29,34 @@ version_time = ['2022-11-08',
                 '2023-02-10',
                 '2023-03-17',
                 '2023-06-30',
-                '2023-07-11',
-                '2023-09-20',
-                ]
+                '2023-07-11']
 
 if getattr(sys, 'frozen', False):
     dirname = os.path.dirname(sys.executable)
 else:
     dirname = os.path.dirname(os.path.abspath(__file__))
+os.chdir(dirname.replace('/FAST-QT.app/Contents/MacOS',''))
+if platform.system() == 'Darwin':
+    Window_Width = 950
+    Window_Length = 800
+    lable_size = 100
+    lable_h = 40
+    choose_size = 240
+    choose_h = 16
+    pointSize = 15
+    fontzt = 'System'
+    sysName = 'mac'
+else:
+    Window_Width = 1150
+    Window_Length = 1000
+    lable_size = 100
+    lable_h = 40
+    choose_size = 290
+    choose_h = 18
+    pointSize = 9
+    fontzt = 'Microsoft YaHei'
+    sysName = 'win'
+
 
 
 class Worker(QThread):
@@ -45,23 +67,34 @@ class Worker(QThread):
 
     def run(self):
         if run_not:
-            st = subprocess.STARTUPINFO()
-            st.dwFlags = subprocess.STARTF_USESHOWWINDOW
-            st.wShowWindow = subprocess.SW_HIDE
 
-            self.p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                      startupinfo=st)
+            if sysName == 'win':
+                st = subprocess.STARTUPINFO()
+                st.dwFlags = subprocess.STARTF_USESHOWWINDOW
+                st.wShowWindow = subprocess.SW_HIDE
+                self.p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                        startupinfo=st)
+            else:
+                try:
+                    self.p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                except:
+                    self.p = subprocess.Popen(cmd.split(), shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                
+
             PID = self.p.pid
             while self.p.poll() is None:
                 line = self.p.stdout.readline()
                 line = line.strip()
                 if line:
-                    line = line.decode('gbk')
-                    if 'Windows' not in line and 'wget' not in line and 'done' not in line and 'listing' not in line and 'required' not in line \
+                    if sysName == 'win':
+                        line = line.decode('gbk')
+                    else:
+                        line = line.decode('utf-8')
+                    if 'windows' not in line and 'wget' not in line and 'done' not in line and 'listing' not in line and 'required' not in line \
                             and '正在下载文件' not in line and '正在开始下载' not in line and len(
                         line.replace(' ',
                                      '')) != 0 and 'gzip' not in line and 'No such file or directory' not in line and \
-                            '! Notice ! splicing RINEX files' not in line:
+                            '! Notice ! splicing RINEX files' not in line and 'esource_tracker.py' not in line:
                         self.sig.emit(line)
                 if PID == 0:
                     self.sig.emit('下载结束')
@@ -89,8 +122,6 @@ def IsFloatNum(str):
 
 class mainWindow(QMainWindow):
     move_Flag = False
-    Window_Width = 1150
-    Window_Length = 1000
     # Window_Title = 'FAST-大地测量数据下载软件V2.0'
 
     def __init__(self):
@@ -100,23 +131,18 @@ class mainWindow(QMainWindow):
 
     def initUI(self):
 
-        # self.setWindowFlag(Qt.FramelessWindowHint)
-        #
-        # self.setWindowTitle(self.Window_Title)
+            
         global font
         font = QtGui.QFont()
-        font.setPointSize(9)
-        font.setFamily('Microsoft YaHei')
-
-        lable_size = 100
-        lable_h = 40
-        choose_size = 290
-        choose_h = 18
+        font.setPointSize(pointSize)
+        # font.setFamily('Microsoft YaHei')
+        font.setFamily(fontzt)
+        # QFont.insertSubstitutions("Microsoft YaHei", ["SimSun", "Arial"])
 
         # ------------------标题栏-------------------
-        self.resize(self.Window_Width, self.Window_Length)
+        self.resize(Window_Width, Window_Length)
         self.setWindowOpacity(0.75)
-        whu_png = os.path.join(dirname, 'win_bin', 'WHU.png')
+        whu_png = os.path.join(dirname, sysName + '_bin', 'WHU.png')
         self.setWindowIcon(QtGui.QIcon(whu_png))
         self.status = self.statusBar()
         self.status.showMessage("武汉大学-GNSS中心")
@@ -430,7 +456,6 @@ class mainWindow(QMainWindow):
         self.hour_combo = QComboBox(self)
         for hour_combo_counter in range(0, 24):
             self.hour_combo.addItem(str(hour_combo_counter))
-        self.hour_combo.addItem('0-23')
         self.hour_combo.setFont(font)
         self.hour_combo.setCurrentIndex(0)
         self.hour_combo.setMinimumSize(QSize(choose_size, choose_h))
@@ -504,7 +529,9 @@ class mainWindow(QMainWindow):
 
         font_big = QtGui.QFont()
         font_big.setPointSize(10)
-        font_big.setFamily('Microsoft YaHei')
+        # font_big.setFamily('Microsoft YaHei')
+        font_big.setFamily(fontzt)
+
 
         dd_btn = QPushButton('下 载', self)
         dd_btn.setFont(font_big)
@@ -574,7 +601,7 @@ class mainWindow(QMainWindow):
         self.logPrint.append(logStr)
 
     def choose_out_dir(self):
-        open_path_file = "./win_bin/open.path"
+        open_path_file = "./" + sysName + "_bin/open.path"
         if os.path.isfile(open_path_file):
             open_path_file_open = open(open_path_file, 'r+')
             open_path = open_path_file_open.readline()
@@ -619,7 +646,8 @@ class mainWindow(QMainWindow):
         else:
             dirname = os.path.dirname(os.path.abspath(__file__))
         global cmd
-        win_bin_fast = os.path.join(dirname, 'win_bin', 'FAST.exe')
+        win_bin_fast = os.path.join(dirname, sysName + '_bin', 'FAST')
+        # win_bin_fast = win_bin_fast.replace('/FAST-QT.app/Contents/MacOS','')
         cmd = win_bin_fast
         type_name = self.name_type_combo.currentText()
         pool_num = self.pool_combo.currentText()
@@ -688,9 +716,8 @@ class mainWindow(QMainWindow):
             cmd += ' -m ' + month
         if type_name in ydsh_type or type_name in ydh_type:
             hour = self.hour_combo.currentText()
-            if hour != '0-23':
-                self.printLog('下载小时 -> ' + hour)
-                cmd += ' -hour ' + hour
+            self.printLog('下载小时 -> ' + hour)
+            cmd += ' -hour ' + hour
 
         loc = self.out_dir_line.text()
         if loc != '' and not os.path.isdir(loc):
@@ -832,13 +859,18 @@ class mainWindow(QMainWindow):
 
         self.dateTimeEdit.setDateTime(QDateTime.currentDateTimeUtc())
 
-
 def ytAppMain():
+    
+    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+        QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+        QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
     ytApp = QApplication(sys.argv)
-    ytApp.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+
     ytApp.setStyleSheet(qdarkstyle.load_stylesheet())
     framelessWnd = FramelessWindow()
-    whu_ico = os.path.join(dirname, 'win_bin', 'WHU.ico')
+    whu_ico = os.path.join(dirname, sysName + '_bin', 'WHU.ico')
     framelessWnd.setWindowIcon(QtGui.QIcon(whu_ico))
     framelessWnd.setWindowTitle('FAST-大地测量数据下载软件V' + str(version[-1]))
 

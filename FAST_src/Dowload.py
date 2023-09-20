@@ -31,6 +31,19 @@ if platform.system() == 'Windows':
     lftp = os.path.join(dirname, 'bin', 'lftp')
     wget += " -T 3 -t 3 -N -c "
     lftp += ' '
+elif platform.system() == 'Darwin':
+    # PrintGDD('当前为Mac系统', "important")
+    if getattr(sys, 'frozen', False):
+        dirname = os.path.dirname(sys.executable)
+    else:
+        dirname = os.path.dirname(os.path.abspath(__file__))
+    # if 'CentOS' in linux_distribution:
+    #     wget = 'wget'
+    # else:
+    wget = os.path.join(dirname, 'mac_bin', 'wget')
+    lftp = os.path.join(dirname, 'mac_bin', 'lftp')
+    wget += " -T 3 -t 3 -N -c "
+    lftp += ' '
 else:
     PrintGDD('当前为Linux系统', "important")
     if getattr(sys, 'frozen', False):

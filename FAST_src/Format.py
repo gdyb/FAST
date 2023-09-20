@@ -222,6 +222,21 @@ if platform.system() == 'Windows':
     teqc += ' '
     gfzrnx_exe = os.path.join(dirname, 'bin', 'gfzrnx_win.exe')
     gfzrnx = gfzrnx_exe + ' '
+elif platform.system() == 'Darwin':
+    if getattr(sys, 'frozen', False):
+        dirname = os.path.dirname(sys.executable)
+    else:
+        dirname = os.path.dirname(os.path.abspath(__file__))
+    crx2rnx = os.path.join(dirname, 'mac_bin', 'crx2rnx')
+    crx2rnx += ' '
+    unzip_tgz = 'tar -xvzf '
+    uncompress = os.path.join(dirname, 'mac_bin', 'gunzip')
+    unzip_zip = os.path.join(dirname, 'mac_bin', 'gunzip') + ' '
+    unzip = uncompress + ' '
+    teqc = os.path.join(dirname, 'mac_bin', 'teqc')
+    teqc += ' '
+    gfzrnx_exe = os.path.join(dirname, 'mac_bin', 'gfzrnx')
+    gfzrnx = gfzrnx_exe + ' '
 else:
     if getattr(sys, 'frozen', False):
         dirname = os.path.dirname(sys.executable)
@@ -342,7 +357,7 @@ def unzip_vlbi(path, ftpsite):
     if len(path) == 0:
         path = os.getcwd()
     os.chdir(path)
-    PrintGDD("开始解压文件!", "normal")
+    PrintGDD("开", "normal")
     dirs = os.listdir(path)
     for filename in dirs:
         if ftpsite[83:88] == filename[0:5] and filename.split(".")[-1] == "gz":

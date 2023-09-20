@@ -32,6 +32,8 @@ def ARG_Mode():
               "site": "", "uncompress": "y", 'hour': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
                                                       18, 19, 20, 21, 22, 23]}
     cddarg = GET_ARG(cddarg)  # 获取参数内容
+    if cddarg is None:
+        return
     ARG_ifwrong(cddarg)  # 判断输入参数正确性
 
     # 数据类型为IVS_week_snx, lftp下载

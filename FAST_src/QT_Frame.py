@@ -14,14 +14,18 @@ if getattr(sys, 'frozen', False):
     dirname = os.path.dirname(sys.executable)
 else:
     dirname = os.path.dirname(os.path.abspath(__file__))
-
-
+if platform.system() == 'Darwin':
+    fontzt = 'System'
+    sysName = "mac"
+else:
+    fontzt = 'Microsoft YaHei'
+    sysName = "win"
 class WindowDragger(QWidget):
     doubleClicked = pyqtSignal()
 
     def __init__(self, parent=None):
         super(WindowDragger, self).__init__(parent)
-
+        
         self.mousePressed = False
 
     def mousePressEvent(self, event):
@@ -73,8 +77,9 @@ class FramelessWindow(QWidget):
 
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowSystemMenuHint)
         # 为了在Windows系统下正确处理最小化函数，需要加上最小化标志按钮
-        if platform.system() == 'Windows':
-            self.setWindowFlags(self.windowFlags() | Qt.WindowMinimizeButtonHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowMinimizeButtonHint)
+        # if platform.system() == sysName + 'dows':
+        #     self.setWindowFlags(self.windowFlags() | Qt.WindowMinimizeButtonHint)
 
         self.setAttribute(Qt.WA_NoSystemBackground, True)
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -87,7 +92,6 @@ class FramelessWindow(QWidget):
         windowShadow.setColor(self.palette().color(QPalette.Highlight))
         windowShadow.setOffset(0.0)
         self.windowFrame.setGraphicsEffect(windowShadow)
-
         self.setMouseTracking(True)
 
         # 监测所有子窗口的鼠标移动事件
@@ -98,25 +102,25 @@ class FramelessWindow(QWidget):
         # 关闭按钮
         self.btnClose = QToolButton()
         self.btnClose.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        close_png = os.path.join(dirname, 'win_bin', 'close-we.png')
+        close_png = os.path.join(dirname, sysName + '_bin', 'close-we.png')
         self.btnClose.setIcon(QIcon(close_png))
         self.btnClose.clicked.connect(self.close)
         # 最大化按钮
         self.btnMaximize = QToolButton()
         self.btnMaximize.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        max_png = os.path.join(dirname, 'win_bin', 'max-we.png')
+        max_png = os.path.join(dirname, sysName + '_bin', 'max-we.png')
         self.btnMaximize.setIcon(QIcon(max_png))
         self.btnMaximize.clicked.connect(self.onButtonMaximizeClicked)
         # 最小化按钮
         self.btnMinimize = QToolButton()
         self.btnMinimize.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        min_png = os.path.join(dirname, 'win_bin', 'min-we.png')
+        min_png = os.path.join(dirname, sysName + '_bin', 'min-we.png')
         self.btnMinimize.setIcon(QIcon(min_png))
         self.btnMinimize.clicked.connect(lambda: self.setWindowState(Qt.WindowMinimized))
         # 恢复按钮
         self.btnRestore = QToolButton()
         self.btnRestore.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        restore_png = os.path.join(dirname, 'win_bin', 'restore-we.png')
+        restore_png = os.path.join(dirname, sysName + '_bin', 'restore-we.png')
         self.btnRestore.setIcon(QIcon(restore_png))
         self.btnRestore.clicked.connect(self.onButtonRestoreClicked)
 
@@ -191,8 +195,9 @@ class FramelessWindow(QWidget):
     def setWindowTitle(self, text):
         self.titleText.setText(text)
         font = QtGui.QFont()
-        font.setFamily('Microsoft YaHei')
-        font.setPointSize(9)
+        # font.setFamily('Microsoft YaHei')
+        font.setFamily(fontzt)
+        font.setPointSize(15)
         self.titleText.setFont(font)
 
     def setWindowIcon(self, ico):
@@ -212,6 +217,16 @@ class FramelessWindow(QWidget):
     def mouseDoubleClickEvent(self, event):
         pass
 
+    
+    def center(self):  # 定义一个函数使得窗口居中显示
+        # 获取屏幕坐标系
+        screen = QDesktopWidget().screenGeometry()
+        # 获取窗口坐标系
+        size = self.geometry()
+        newLeft = int((screen.width() - size.width()) / 2)
+        newTop = int((screen.height() - size.height()) / 2)
+        self.move(newLeft,newTop)
+        
     def checkBorderDragging(self, event):
         if self.isMaximized():
             return

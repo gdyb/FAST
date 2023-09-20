@@ -1,8 +1,14 @@
-cd D:\Code\FAST\FAST_src
+--Win
+-terminal
 pyinstaller -F -i .\FAST.ico .\FAST.py .\ARG_Mode.py .\ARG_Sub.py .\CDD_Mode.py .\CDD_Sub.py .\Dowload.py .\FTP_Source.py .\FAST_Print.py .\GET_Ftp.py .\GNSS_TYPE.py .\Help.py .\MGEX_name.py .\Format.py .\GNSS_Timestran.py --distpath D:\Code\FAST\Windows
+-QT
 pyinstaller -F -w -i ./win_bin/WHU.ico .\FAST-QT.py .\GNSS_Timestran.py .\GNSS_TYPE.py .\QT_Frame.py --distpath D:\Code\FAST\Win_QT
 
-pyinstaller -F FAST.py ARG_Mode.py ARG_Sub.py CDD_Mode.py CDD_Sub.py Dowload.py FTP_Source.py FAST_Print.py GET_Ftp.py GNSS_TYPE.py Help.py MGEX_name.py Format.py GNSS_Timestran.py --distpath /mnt/d/Code/FAST/Linux
+--Linux
+pyinstaller -F -i FAST.ico FAST.py ARG_Mode.py ARG_Sub.py CDD_Mode.py CDD_Sub.py Dowload.py FTP_Source.py FAST_Print.py GET_Ftp.py GNSS_TYPE.py Help.py MGEX_name.py Format.py GNSS_Timestran.py --distpath /mnt/d/Code/FAST/Linux
 
-
-pyinstaller -F -w -i ./win_bin/WHU.ico .\FAST-QT.py .\GNSS_Timestran.py .\GNSS_TYPE.py .\QT_Frame.py --distpath D:\Code\FAST\Win_QT
+--Mac
+-terminal
+pyinstaller -F FAST.py ARG_Mode.py ARG_Sub.py CDD_Mode.py CDD_Sub.py Dowload.py FTP_Source.py FAST_Print.py GET_Ftp.py GNSS_TYPE.py Help.py MGEX_name.py Format.py GNSS_Timestran.py --distpath /Users/amst/Code/FAST/Mac
+-QT
+pyinstaller -F -w FAST-QT.py GNSS_Timestran.py GNSS_TYPE.py QT_Frame.py --distpath /Users/amst/Code/FAST/Mac_QT
