@@ -3,9 +3,9 @@
 # FAST_Main      : MAIN of Fusion Abundant multi-Source data download Terminal
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.09
+# Latest Version : 2.11
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-06-30 - Version 2.09
+# Date           : 2023-09-20 - Version 2.11
 
 def FAST():
     """
@@ -167,6 +167,14 @@ def FAST():
                     > MGEX_GFZ_R_bia -> MGEX_GFZ_R_osb / MGEX_GFZ_F_clk -> GRE_GFZ_F_clk
                     x COD_F_ion, 与CODG_ion重复
                     by Chang Chuntao  # 2023-06-30
+
+    Version  2.10   + MGEX_WHU_RTS_sp3 / MGEX_WHU_RTS_clk
+                    + MGEX_IAC_F_sp3 / MGEX_IAC_F_clk / MGEX_CAS_R_osb
+                    by Chang Chuntao  # 2023-08-11
+
+
+    Version  2.11   + GRE_JAX_U_sp3 / GRE_JAX_U_clk_30s
+                    by Chang Chuntao  # 2023-09-20
     """
     import sys
     from ARG_Mode import ARG_Mode

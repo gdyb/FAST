@@ -179,8 +179,8 @@ def isinpath(file):  # 判断相关文件是否存在
     filelownZ = filelown + '.Z'
     filelowngz = filelown + '.gz'
     if os.path.exists(file[0:-2]) or os.path.exists(file[0:-3]) \
-            or os.path.exists(file) or os.path.exists(projectFileLowZ) or os.path.exists(projectFileLowGz) \
-            or os.path.exists(highrate_file) or os.path.exists(highrate_file_mgex) or os.path.exists(filelowo) \
+            or os.path.exists(file) or os.path.exists(file.replace('05M', '15M')) or os.path.exists(projectFileLowZ) or os.path.exists(projectFileLowGz) \
+            or os.path.exists(file.replace('15M', '05M')) or os.path.exists(highrate_file) or os.path.exists(highrate_file_mgex) or os.path.exists(filelowo) \
             or os.path.exists(filelowd) or os.path.exists(filelowp) or os.path.exists(filelown) \
             or os.path.exists(fileprolow) or os.path.exists(ionfile) or os.path.exists(projectFileLow) \
             or os.path.exists(fileUnzip) or os.path.exists(projectFileUpperGz) or os.path.exists(projectFileUpperZ) \
@@ -206,6 +206,7 @@ def isinpath(file):  # 判断相关文件是否存在
                     by Chang Chuntao    -> Version : 2.08
 """
 tar = 'tar -xf '
+
 if platform.system() == 'Windows':
     if getattr(sys, 'frozen', False):
         dirname = os.path.dirname(sys.executable)

@@ -3,9 +3,9 @@
 # GNSS_TYPE      : ALL TYPE OF GNSS DATA
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.09
+# Latest Version : 2.11
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-06-30 - Version 2.09
+# Date           : 2023-09-20 - Version 2.11
 
 
 """
@@ -102,6 +102,16 @@
                     + GRACE_dat / GRACE_rnxapp / GRACE_fo_dat / GRACE_fo1_sp3 / GRACE_fo1_sp3 / CHAMP_rnx / CHAMP_sp3
                     + SWARM_rnx / SWARM_sp3
                     by Chang Chuntao  -> Version : 2.08
+    2023-06-30 :    > GPS_COD_bia -> GPS_COD_F_osb / MGEX_COD_F_bia -> MGEX_COD_F_osb / MGEX_COD_R_bia -> GRE_COD_R_osb
+                    > MGEX_WHU_R_OSB_bia -> MGEX_WHU_R_osb / MGEX_WHU_R_ABS_bia -> MGEX_WHU_R_abs
+                    > MGEX_GFZ_R_bia -> MGEX_GFZ_R_osb
+                    x COD_F_ion, 与CODG_ion重复
+                    by Chang Chuntao  -> Version : 2.09
+    2023-08-11 :    + MGEX_WHU_RTS_sp3 / MGEX_WHU_RTS_clk
+                    + MGEX_IAC_F_sp3 / MGEX_IAC_F_clk / MGEX_CAS_R_osb
+                    by Chang Chuntao  -> Version : 2.10
+    2023-09-20 :    + GRE_JAX_U_sp3 / GRE_JAX_U_clk_30s
+                    by Chang Chuntao  -> Version : 2.11
 """
 
 gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd4"]],  # 1 BRDC
@@ -109,20 +119,23 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
              ["SP3", ["GPS_IGS_sp3", "GPS_IGR_sp3", "GPS_IGU_sp3", "GPS_GRG_sp3",  # 2 SP3
 
                       "MGEX_WHU_F_sp3", "MGEX_WHU_R_sp3", "MGEX_WHU_U_sp3",
-                      "MGEX_WHU_H_sp3", "MGEX_SHA_F_sp3", "MGEX_COD_F_sp3",
-                      "MGEX_GRG_F_sp3", 'MGEX_GFZ_R_sp3', "GRE_GFZ_F_sp3",
-                      'GRE_COD_R_sp3', 'GLO_IGL_F_sp3']],
+                      "MGEX_WHU_H_sp3",  "MGEX_WHU_RTS_sp3", "MGEX_SHA_F_sp3",
+                      "MGEX_COD_F_sp3",  "MGEX_GRG_F_sp3", 'MGEX_GFZ_R_sp3',
+                      "MGEX_IAC_F_sp3",
+                      "GRE_GFZ_F_sp3",  'GRE_COD_R_sp3', 'GLO_IGL_F_sp3',
+                      'GRE_JAX_U_sp3']],
 
              ["CLK", ["GPS_IGS_clk", "GPS_IGR_clk", "GPS_GRG_clk", "GPS_IGS_clk_30s",  # 3 CLK
 
                       "MGEX_WHU_F_clk", "MGEX_WHU_R_clk", "MGEX_WHU_U_clk",
-                      "MGEX_WHU_H_clk", "MGEX_SHA_F_clk", 'MGEX_COD_F_clk',
-                      "MGEX_GRG_F_clk", 'MGEX_GFZ_R_clk', 'GRE_GFZ_F_clk',
-                      'GRE_COD_R_clk', 'GLO_IGL_F_clk',
-                      'GRE_COD_F_clk_30s']],
+                      "MGEX_WHU_H_clk", "MGEX_WHU_RTS_clk", "MGEX_SHA_F_clk",
+                      'MGEX_COD_F_clk', "MGEX_GRG_F_clk", 'MGEX_GFZ_R_clk',
+                      "MGEX_IAC_F_clk",
+                      'GRE_GFZ_F_clk', 'GRE_COD_R_clk', 'GLO_IGL_F_clk',
+                      'GRE_COD_F_clk_30s', 'GRE_JAX_U_clk_30s']],
 
              ["RINEX", ["GPS_IGS_rnx", "GPS_USA_cors", "GPS_HK_cors", "GPS_AU_cors",  # 4 RINEX
-                        "MGEX_IGS_rnx", "MGEX_HK_cors", "GRE_IGS_01S", "GCRE_MGEX_01S", "MGEX_EU_cors"]],
+                        "MGEX_IGS_rnx", "MGEX_HK_cors", "GRE_IGS_01S", "GCRE_MGEX_01S", "MGEX_EU_cors", "GRE_USA_01S"]],
 
              ["ERP", ["IGS_F_erp", "IGS_R_erp", "WHU_F_erp",
                       "COD_F_erp", "WHU_U_erp", "GFZ_R_erp",
@@ -130,7 +143,7 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
 
              ["BIA_DCB_OBX", ["GPS_COD_F_osb",  "GE_GRG_F_osb", "GRE_COD_R_osb",
                               'MGEX_WHU_F_osb', "MGEX_WHU_R_osb", "MGEX_WHU_R_abs",
-                              "MGEX_COD_F_osb", "MGEX_GFZ_R_osb",   # 6 BIA_DCB_OBX
+                              "MGEX_COD_F_osb", "MGEX_GFZ_R_osb", "MGEX_CAS_R_osb",   # 6 BIA_DCB_OBX
 
                               "GPS_COD_dcb", "MGEX_CAS_R_dcb",
                               "P1C1", "P1P2", "P2C2",
@@ -176,8 +189,9 @@ gnss_type = [["BRDC", ["GPS_brdc", "MGEX_brdc", "MGEX_CNAV_brdm", "MGEX_CNAV_brd
              ['PANDA', ['Panda_jpleph_de405', 'Panda_poleut1', 'Panda_EGM',  # 14 PANDA
                         'Panda_oceanload', 'Panda_oceantide', 'Panda_utcdif',
                         'Panda_antnam', 'Panda_svnav', 'Panda_nutabl',
-                        'Panda_ut1tid', 'Panda_leap_sec', 'MGEX_IGS14_atx', "MGEX_IGS20_atx", "SW_EOP",
-                        'Panda_gpsrapid']],
+                        'Panda_ut1tid', 'Panda_leap_sec', 'MGEX_IGS14_atx',
+                        "MGEX_IGS20_atx", "SW_EOP",'Panda_gpsrapid',
+                        'EOP_C04']],
 
              ['GAMIT', ['Gamit_pmu_bull', 'Gamit_ut1usno', 'Gamit_poleusno',  # 15 GAMIT
                         'Gamit_dcb_dat', 'Gamit_soltab', 'Gamit_luntab',
@@ -204,7 +218,7 @@ for gs_list in gnss_type:
             if gs_type == 'GRACE_rnxapp':
                 no_type.append(gs_type)
             elif gs_type in ["MGEX_WHU_U_sp3", "MGEX_WHU_U_clk", "MGEX_WHU_Hour_sp3", "MGEX_WHU_Hour_clk", "WHU_U_erp",
-                             "WHU_Hour_erp"]:
+                             "WHU_Hour_erp", "GRE_JAX_U_sp3", "GRE_JAX_U_clk_30s"]:
                 ydh_type.append(gs_type)
             else:
                 yd_type.append(gs_type)

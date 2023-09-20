@@ -16,7 +16,7 @@ from QT_Frame import FramelessWindow
 from GNSS_TYPE import gnss_type, yd_type, ym_type, no_type, yds_type, s_type, ydsh_type, ydh_type
 import qdarkstyle
 
-version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09]
+version = [2.00, 2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09, 2.10, 2.11]
 version_time = ['2022-11-08',
                 '2022-11-09',
                 '2022-11-10',
@@ -26,7 +26,10 @@ version_time = ['2022-11-08',
                 '2023-01-14',
                 '2023-02-10',
                 '2023-03-17',
-                '2023-06-30']
+                '2023-06-30',
+                '2023-07-11',
+                '2023-09-20',
+                ]
 
 if getattr(sys, 'frozen', False):
     dirname = os.path.dirname(sys.executable)
@@ -427,6 +430,7 @@ class mainWindow(QMainWindow):
         self.hour_combo = QComboBox(self)
         for hour_combo_counter in range(0, 24):
             self.hour_combo.addItem(str(hour_combo_counter))
+        self.hour_combo.addItem('0-23')
         self.hour_combo.setFont(font)
         self.hour_combo.setCurrentIndex(0)
         self.hour_combo.setMinimumSize(QSize(choose_size, choose_h))
@@ -520,6 +524,7 @@ class mainWindow(QMainWindow):
 
         # |--log打印控件 -> 右侧下方
         self.logPrint = QTextEdit()
+        self.logPrint.document().setMaximumBlockCount(50)
         self.logPrint.setLineWrapMode(QTextEdit.NoWrap)
         self.logPrint.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.logPrint.setReadOnly(True)
@@ -683,8 +688,9 @@ class mainWindow(QMainWindow):
             cmd += ' -m ' + month
         if type_name in ydsh_type or type_name in ydh_type:
             hour = self.hour_combo.currentText()
-            self.printLog('下载小时 -> ' + hour)
-            cmd += ' -hour ' + hour
+            if hour != '0-23':
+                self.printLog('下载小时 -> ' + hour)
+                cmd += ' -hour ' + hour
 
         loc = self.out_dir_line.text()
         if loc != '' and not os.path.isdir(loc):

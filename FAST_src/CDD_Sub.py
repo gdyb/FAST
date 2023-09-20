@@ -3,9 +3,9 @@
 # CDD_Sub        : Get user input
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.09
+# Latest Version : 2.11
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-06-30 - Version 2.09
+# Date           : 2023-09-20 - Version 2.11
 import sys
 
 from Format import *
@@ -176,6 +176,12 @@ def sub_cdd(obj):
                     > MGEX_WHU_R_OSB_bia -> MGEX_WHU_R_osb / MGEX_WHU_R_ABS_bia -> MGEX_WHU_R_abs
                     > MGEX_GFZ_R_bia -> MGEX_GFZ_R_osb
                     x COD_F_ion, 与CODG_ion重复
+                    by Chang Chuntao  -> Version : 2.09
+    2023-08-11 :    + MGEX_WHU_RTS_sp3 / MGEX_WHU_RTS_clk
+                    + MGEX_IAC_F_sp3 / MGEX_IAC_F_clk / MGEX_CAS_R_osb
+                    by Chang Chuntao  -> Version : 2.10
+    2023-09-20 :    + GRE_JAX_U_sp3 / GRE_JAX_U_clk_30s
+                    by Chang Chuntao  -> Version : 2.11
     """
     print("")
     if obj == 1:
@@ -201,9 +207,11 @@ def sub_cdd(obj):
         print("    +------------------------------------GCRE------------------------------------+")
         print("    |                                                                            |")
         print("    |    5 : MGEX_WHU_F_sp3         6 : MGEX_WHU_R_sp3         7 : MGEX_WHU_U_sp3|")
-        print("    |    8 : MGEX_WHU_H_sp3         9 : MGEX_SHA_F_sp3        10 : MGEX_COD_F_sp3|")
-        print("    |   11 : MGEX_GRG_F_sp3        12 : MGEX_GFZ_R_sp3        13 : GRE_GFZ_F_sp3 |")
-        print("    |   14 : GRE_COD_R_sp3         15 : GLO_IGL_F_sp3                            |")
+        print("    |    8 : MGEX_WHU_H_sp3         9 : MGEX_WHU_RTS_sp3      10 : MGEX_SHA_F_sp3|")
+        print("    |   11 : MGEX_COD_F_sp3        12 : MGEX_GRG_F_sp3        13 : MGEX_GFZ_R_sp3|")
+        print("    |   14 : MGEX_IAC_F_sp3                                                      |")
+        print("    |   15 : GRE_GFZ_F_sp3         16 : GRE_COD_R_sp3         17 : GLO_IGL_F_sp3 |")
+        print("    |   18 : GRE_JAX_U_sp3                                                       |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 3:
@@ -216,11 +224,12 @@ def sub_cdd(obj):
         print("    |                                                                            |")
         print("    +------------------------------------GCRE------------------------------------+")
         print("    |                                                                            |")
-        print("    |    5 : MGEX_WHU_F_clk         6 : MGEX_WHU_R_clk         7 : MGEX_WHU_U_clk|")
-        print("    |    8 : MGEX_WHU_H_clk         9 : MGEX_SHA_F_clk        10 : MGEX_COD_F_clk|")
-        print("    |   11 : MGEX_GRG_F_clk        12 : MGEX_GFZ_R_clk        13 : GRE_GFZ_F_clk |")
-        print("    |   14 : GRE_COD_R_clk         15 : GLO_IGL_F_clk                            |")
-        print("    |   16 : GRE_COD_F_clk_30s                                                   |")
+        print("    |    5 : MGEX_WHU_F_clk         6 : MGEX_WHU_R_clk        7 : MGEX_WHU_U_clk |")
+        print("    |    8 : MGEX_WHU_H_clk         9 : MGEX_WHU_RTS_clk     10 : MGEX_SHA_F_clk |")
+        print("    |   11 : MGEX_COD_F_clk        12 : MGEX_GRG_F_clk       13 : MGEX_GFZ_R_clk |")
+        print("    |   14 : MGEX_IAC_F_clk                                                      |")
+        print("    |   15 : GRE_GFZ_F_clk         16 : GRE_COD_R_clk        17 : GLO_IGL_F_clk  |")
+        print("    |   18 : GRE_COD_F_clk_30s     19 : GRE_JAX_U_clk_30s                        |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 4:
@@ -234,7 +243,7 @@ def sub_cdd(obj):
         print("    +------------------------------------GCRE------------------------------------+")
         print("    |                                                                            |")
         print("    |    5 : MGEX_IGS_rnx           6 : MGEX_HK_cors           7 : GRE_IGS_01S   |")
-        print("    |    8 : GCRE_MGEX_01S          9 : MGEX_EU_cors                             |")
+        print("    |    8 : GCRE_MGEX_01S          9 : MGEX_EU_cors          10 : GRE_USA_01S   |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 5:
@@ -252,18 +261,18 @@ def sub_cdd(obj):
         print("    |                                                                            |")
         print("    |    1 : GPS_COD_F_osb          2 : GE_GRG_F_osb           3 : GRE_COD_R_osb |")
         print("    |    4 : MGEX_WHU_F_osb         5 : MGEX_WHU_R_osb         6 : MGEX_WHU_R_abs|")
-        print("    |    7 : MGEX_COD_F_osb         8 : MGEX_GFZ_R_osb                           |")
+        print("    |    7 : MGEX_COD_F_osb         8 : MGEX_GFZ_R_osb         9 : MGEX_CAS_R_osb|")
         print("    |                                                                            |")
         print("    +------------------------------------DCB-------------------------------------+")
         print("    |                                                                            |")
-        print("    |    9 : GPS_COD_dcb           10 : MGEX_CAS_R_dcb                           |")
-        print("    |   11 : P1C1                  12 : P1P2                  13 : P2C2          |")
+        print("    |   10 : GPS_COD_dcb           11 : MGEX_CAS_R_dcb                           |")
+        print("    |   12 : P1C1                  13 : P1P2                  14 : P2C2          |")
         print("    |                                                                            |")
         print("    +------------------------------------OBX-------------------------------------+")
         print("    |                                                                            |")
-        print("    |   14 : GPS_COD_F_obx         15 : GPS_GRG_F_obx                            |")
-        print("    |   16 : MGEX_WHU_F_obx        17 : MGEX_WHU_R_obx        18 : MGEX_WHU_U_obx|")
-        print("    |   19 : MGEX_COD_F_obx        20 : MGEX_GFZ_R_obx                           |")
+        print("    |   15 : GPS_COD_F_obx         16 : GPS_GRG_F_obx                            |")
+        print("    |   17 : MGEX_WHU_F_obx        18 : MGEX_WHU_R_obx        19 : MGEX_WHU_U_obx|")
+        print("    |   20 : MGEX_COD_F_obx        21 : MGEX_GFZ_R_obx                           |")
         print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 7:
@@ -343,6 +352,8 @@ def sub_cdd(obj):
         print("    |    7 : Panda_antnam           8 : Panda_svnav            9 : Panda_nutabl  |")
         print("    |   10 : Panda_ut1tid          11 : Panda_leap_sec        12 : MGEX_IGS14_atx|")
         print("    |   13 : MGEX_IGS20_atx        14 : SW_EOP                15 : Panda_gpsrapid|")
+        print("    |   16 : EOP_C04                                                             |")
+        print("    |                                                                            |")
         print("    +----------------------------------------------------------------------------+")
     elif obj == 15:
         print("    +-----------------------------------GAMIT------------------------------------+")

@@ -52,13 +52,13 @@ def GET_ARG(cddarg):
         elif nowArg in ["-m", "-month"]:
             cddarg["month"] = int(args[argIndex + 1])
         elif nowArg in ["-hour"]:
-            cddarg["hour"] = int(args[argIndex + 1])
+            cddarg["hour"] = [int(args[argIndex + 1])]
         elif nowArg in ["-f", "-file"]:
             cddarg["file"] = args[argIndex + 1]
         elif nowArg in ["-p", "-process"]:
             cddarg["process"] = int(args[argIndex + 1])
         elif nowArg in ["-u", "-uncompress"]:
-            cddarg["uncompress"] = int(args[argIndex + 1])
+            cddarg["uncompress"] = args[argIndex + 1]
         elif nowArg in ["-i", "-site"]:
             cddarg["file"] = args[argIndex + 1].replace(',', ' ')
     return cddarg
@@ -194,7 +194,7 @@ def geturl(cddarg):
                 cddarg['day2']) + "\n",
                      "normal")
             for day in range(cddarg['day1'], cddarg['day2'] + 1):
-                ftpsitelist = getftp(dt, cddarg['year'], day)
+                ftpsitelist = getftp(dt, cddarg['year'], day, cddarg['hour'])
                 url = []
                 if len(ftpsitelist) != 0:
                     for ftpsite in ftpsitelist:
@@ -209,9 +209,7 @@ def geturl(cddarg):
             print("")
             cddarg['site'] = getSite(cddarg['file'], dt)
             for day in range(cddarg['day1'], cddarg['day2'] + 1):
-                ftpsitelist = getftp(dt, cddarg['year'], day,
-                                         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-                                          22, 23])  # 通过数据类型与下载时间获取完整下载地址
+                ftpsitelist = getftp(dt, cddarg['year'], day, cddarg['hour'])  # 通过数据类型与下载时间获取完整下载地址
                 for siteInList in cddarg['site']:
                     siteftp = []
                     for ftpInList in ftpsitelist:

@@ -3,15 +3,15 @@
 # Help           : Help for all mode
 # Author         : Chang Chuntao
 # Copyright(C)   : The GNSS Center, Wuhan University & Chinese Academy of Surveying and mapping
-# Latest Version : 2.09
+# Latest Version : 2.11
 # Creation Date  : 2022.03.27 - Version 1.00
-# Date           : 2023-06-30 - Version 2.09
+# Date           : 2023-09-20 - Version 2.11
 
 from FAST_Print import PrintGDD
 from GNSS_TYPE import gnss_type
 
 version = [1.00, 1.10, 1.11, 1.12, 1.13, 1.14, 1.15, 1.16, 1.17, 1.18, 1.19, 1.20, 1.21, 1.22, 1.23, 1.24, 1.25,
-           2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09]
+           2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09, 2.10, 2.11]
 
 version_time = ['2022-03-27',
                 '2022-04-12',
@@ -38,7 +38,10 @@ version_time = ['2022-03-27',
                 '2023-01-14',
                 '2023-02-10',
                 '2023-03-17',
-                '2023-06-30']
+                '2023-06-30',
+                '2023-08-11',
+                '2023-09-20'
+                ]
 
 
 def Supported_Data():
