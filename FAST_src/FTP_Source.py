@@ -248,7 +248,7 @@ FTP_S = {"GPS_brdc": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YEAR>/<DOY>/<YY
          'GRE_COD_R_sp3': ['http://ftp.aiub.unibe.ch/CODE/COD0OPSRAP_<YYYY><DOY>0000_01D_05M_ORB.SP3',
                            'http://ftp.aiub.unibe.ch/CODE/<YYYY>_M/COD<GPSWD>.EPH_M.Z'],
 
-         'GRE_JAX_U_sp3':['ftp://mgmds01.tksc.jaxa.jp/products/<GPSW>/jxu2<GPSWD>_<HOUR>.sp3.Z'],
+         'GRE_JAX_U_sp3':['ftp://mgmds01.tksc.jaxa.jp/products/<GPSW>/jxu<GPSWD>_<HOUR>.sp3.Z'],
 
          "GPS_IGS_rnx": ["ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YYYY>/<DOY>/<YY>o/<SITE><DOY>0.<YY>o.gz",
                          "ftp://igs.gnsswhu.cn//pub/gps/data/daily/<YYYY>/<DOY>/<YY>o/<SITE><DOY>0.<YY>o.Z",
